@@ -1,10 +1,62 @@
-class BookingSystem {
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
+
+class BookingSystem() {
     val users = mutableListOf<User>()
     val rooms = mutableListOf<Room>()
     var currentUser: User? = null
 
+    init {
+        Database.connect(
+            "jdbc:sqlite:4kitsw10_COM534_2_database.db",
+            "org.sqlite.JDBC"
+        )
+
+        transaction {
+            Accounts.selectAll().forEach {
+                val user = User(
+                    it[Accounts.username],
+                    it[Accounts.password],
+                    it[Accounts.admin]
+                )
+
+                addUser(user)
+            }
+        }
+    }
+
     fun signup(username: String, password: String) {
-        addUser(User(username, password, false))
+        Database.connect(
+            "jdbc:sqlite:4kitsw10_COM534_2_database.db",
+            "org.sqlite.JDBC"
+        )
+
+        transaction {
+            SchemaUtils.create(Accounts)
+        }
+
+        transaction {
+            Accounts.insert {
+                it[Accounts.username] = username
+                it[Accounts.password] = password
+                it[admin] = false
+            }[Accounts.accountId]
+        }
+
+        transaction {
+            Accounts.selectAll().forEach {
+                val user = User(
+                    it[Accounts.username],
+                    it[Accounts.password],
+                    it[Accounts.admin]
+                )
+
+                addUser(user)
+            }
+        }
     }
 
     fun addUser(u: User) {

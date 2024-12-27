@@ -25,6 +25,10 @@ dependencies {
 
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 compose.desktop {
     application {
         mainClass = "MainKt"
