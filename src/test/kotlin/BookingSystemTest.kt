@@ -15,6 +15,24 @@ class BookingSystemTest {
                 false
             )
 
+            val bookingSystem = BookingSystem()
+
+            bookingSystem.signup(input.username, input.password)
+            assert(accountsMatch(input, bookingSystem.users[i]))
+        }
+    }
+
+    @Test
+    fun testLoadStudent() {
+        clearAccounts()
+
+        for (i in 0..5) {
+            val input = User(
+                "student$i",
+                "20CharactersOrMore2$i",
+                false
+            )
+
             BookingSystem().signup(input.username, input.password)
             assert(accountsMatch(input, BookingSystem().users[i]))
         }
