@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material.TextField
+import androidx.compose.material.Button
 
 @Composable
 fun App() {
@@ -36,6 +37,14 @@ fun App() {
             onValueChange = { text = it },
             label = { Text("Password") }
         )
+
+        Button (onClick = { println("Button clicked") }) {
+            Text("Login")
+        }
+
+        Button (onClick = { println("Button clicked") }) {
+            Text("register")
+        }
     }
 }
 
