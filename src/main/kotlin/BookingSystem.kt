@@ -37,22 +37,14 @@ class BookingSystem() {
         transaction {
             SchemaUtils.create(AccountsTable)
 
-            val inserted = AccountsTable.insert {
+            AccountsTable.insert {
                 it[AccountsTable.username] = username
                 it[AccountsTable.password] = password
                 it[admin] = false
             }[AccountsTable.accountId]
-
-            AccountsTable.selectAll().where { AccountsTable.accountId eq inserted }.forEach {
-                val user = User(
-                    it[AccountsTable.username],
-                    it[AccountsTable.password],
-                    it[AccountsTable.admin]
-                )
-
-                addUser(user)
-            }
         }
+
+        addUser(User(username, password, false))
     }
 
     fun addUser(u: User) {
