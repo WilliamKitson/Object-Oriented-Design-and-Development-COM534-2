@@ -3,7 +3,7 @@ import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
 
-class BookingSystemTest {
+class LoginRegisterTest {
     @Test
     fun testSignupValidStudent() {
         clearAccounts()
