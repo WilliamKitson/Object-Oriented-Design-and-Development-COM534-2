@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -40,21 +41,24 @@ fun App() {
             label = { Text("Password") }
         )
 
-        val bookingSystem = BookingSystem()
         var errors by remember { mutableStateOf("") }
 
-        Button (onClick = {
-            bookingSystem.login(username, password)
-            errors = bookingSystem.getLastError()
-        }) {
-            Text("Login")
-        }
+        Row {
+            val bookingSystem = BookingSystem()
 
-        Button (onClick = {
-            bookingSystem.signup(username, password)
-            errors = bookingSystem.getLastError()
-        }) {
-            Text("register")
+            Button (onClick = {
+                bookingSystem.login(username, password)
+                errors = bookingSystem.getLastError()
+            }) {
+                Text("Login")
+            }
+
+            Button (onClick = {
+                bookingSystem.signup(username, password)
+                errors = bookingSystem.getLastError()
+            }) {
+                Text("register")
+            }
         }
 
         Text(errors, color = Color.Red)
