@@ -35,6 +35,10 @@ class BookingSystem() {
             }
         }
 
+        if (!PasswordAuthenticator().valid(password)) {
+            return
+        }
+
         Database.connect(
             "jdbc:sqlite:4kitsw10_COM534_2_database.db",
             "org.sqlite.JDBC"

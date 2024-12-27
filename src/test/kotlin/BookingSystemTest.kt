@@ -81,4 +81,12 @@ class BookingSystemTest {
 
         assert(BookingSystem().users.count() == 1)
     }
+
+    @Test
+    fun testShortPassword() {
+        clearAccounts()
+
+        BookingSystem().signup("student", "t00Sh0rt")
+        assert(BookingSystem().users.isEmpty())
+    }
 }
