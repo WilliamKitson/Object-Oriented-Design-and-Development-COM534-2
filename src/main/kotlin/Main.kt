@@ -24,17 +24,19 @@ fun App() {
         Text("Please sign up for an account or login below.")
         Text("Remember, this project is linked to a database so registered accounts are persistent.")
 
-        var text by remember { mutableStateOf("") }
+        var username by remember { mutableStateOf("") }
 
         TextField(
-            value = text,
-            onValueChange = { text = it },
+            value = username,
+            onValueChange = { username = it },
             label = { Text("Username") }
         )
 
+        var password by remember { mutableStateOf("") }
+
         TextField(
-            value = text,
-            onValueChange = { text = it },
+            value = password,
+            onValueChange = { password = it },
             label = { Text("Password") }
         )
 
@@ -42,7 +44,7 @@ fun App() {
             Text("Login")
         }
 
-        Button (onClick = { println("Button clicked") }) {
+        Button (onClick = { BookingSystem().signup(username, password) }) {
             Text("register")
         }
     }
