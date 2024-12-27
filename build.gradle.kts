@@ -15,12 +15,14 @@ repositories {
     google()
 }
 
+val exposedVersion: String by project
 dependencies {
-    // Note, if you develop a library, you should use compose.desktop.common.
-    // compose.desktop.currentOs should be used in launcher-sourceSet
-    // (in a separate module for demo project and in testMain).
-    // With compose.desktop.common you will also lose @Preview functionality
+    testImplementation(kotlin("test"))
     implementation(compose.desktop.currentOs)
+    implementation("org.xerial:sqlite-jdbc:3.47.0.0")
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+
 }
 
 compose.desktop {

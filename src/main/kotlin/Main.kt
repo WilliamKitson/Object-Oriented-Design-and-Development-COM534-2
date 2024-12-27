@@ -9,6 +9,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.selectAll
 
 @Composable
 @Preview
@@ -79,4 +84,31 @@ fun main() = application {
     )
 
     print("bookings: ${bookingSystem.getAllBookingsForRoomAndDay("1", "Monday")}\n")
+
+    Database.connect(
+        "jdbc:sqlite:databaseExample.db",
+        "org.sqlite.JDBC"
+    )
+
+    transaction {
+        SchemaUtils.create(Accounts)
+    }
+
+    var insertedId = 0
+
+    transaction {
+        insertedId = Accounts.insert {
+            it[username] = "test username"
+            it[password] = "test password"
+            it[admin] = true
+        }[Accounts.accountId]
+    }
+
+    println(insertedId)
+
+    transaction {
+        Accounts.selectAll().forEach {
+            println(it)
+        }
+    }
 }
