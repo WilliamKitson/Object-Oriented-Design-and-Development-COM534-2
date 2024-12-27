@@ -86,7 +86,7 @@ fun main() = application {
     print("bookings: ${bookingSystem.getAllBookingsForRoomAndDay("1", "Monday")}\n")
 
     Database.connect(
-        "jdbc:sqlite:databaseExample.db",
+        "jdbc:sqlite:4kitsw10_COM534_2_database.db",
         "org.sqlite.JDBC"
     )
 
