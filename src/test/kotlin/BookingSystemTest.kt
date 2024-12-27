@@ -97,4 +97,12 @@ class BookingSystemTest {
         BookingSystem().signup("student", "20CHARACTERSORMORE20")
         assert(BookingSystem().users.isEmpty())
     }
+
+    @Test
+    fun testUppercasePassword() {
+        clearAccounts()
+
+        BookingSystem().signup("student", "20charactersormore20")
+        assert(BookingSystem().users.isEmpty())
+    }
 }
