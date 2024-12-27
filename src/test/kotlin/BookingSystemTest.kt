@@ -16,12 +16,7 @@ class BookingSystemTest {
             )
 
             BookingSystem().signup(input.username, input.password)
-
-            val output = BookingSystem().users[i]
-
-            assert(output.username == input.username)
-            assert(output.password == input.password)
-            assert(output.isAdmin == input.isAdmin)
+            assert(accountsMatch(input, BookingSystem().users[i]))
         }
     }
 
@@ -34,5 +29,21 @@ class BookingSystemTest {
         transaction {
             AccountsTable.deleteAll()
         }
+    }
+
+    private fun accountsMatch(first: User, second: User): Boolean {
+        if (first.username != second.username) {
+            return false
+        }
+
+        if (first.password != second.password) {
+            return false
+        }
+
+        if (first.isAdmin != second.isAdmin) {
+            return false
+        }
+
+        return true
     }
 }
