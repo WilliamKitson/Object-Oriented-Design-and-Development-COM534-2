@@ -22,22 +22,6 @@ class BookingSystemTest {
         }
     }
 
-    @Test
-    fun testLoadStudent() {
-        clearAccounts()
-
-        for (i in 0..5) {
-            val input = User(
-                "student$i",
-                "20CharactersOrMore2$i",
-                false
-            )
-
-            BookingSystem().signup(input.username, input.password)
-            assert(accountsMatch(input, BookingSystem().users[i]))
-        }
-    }
-
     private fun clearAccounts() {
         Database.connect(
             "jdbc:sqlite:4kitsw10_COM534_2_database.db",
@@ -63,5 +47,38 @@ class BookingSystemTest {
         }
 
         return true
+    }
+
+    @Test
+    fun testLoadStudent() {
+        clearAccounts()
+
+        for (i in 0..5) {
+            val input = User(
+                "student$i",
+                "20CharactersOrMore2$i",
+                false
+            )
+
+            BookingSystem().signup(input.username, input.password)
+            assert(accountsMatch(input, BookingSystem().users[i]))
+        }
+    }
+
+    @Test
+    fun testDuplicatedUsername() {
+        clearAccounts()
+
+        for (i in 0..5) {
+            val input = User(
+                "student",
+                "20CharactersOrMore2$i",
+                false
+            )
+
+            BookingSystem().signup(input.username, input.password)
+        }
+
+        assert(BookingSystem().users.count() == 1)
     }
 }

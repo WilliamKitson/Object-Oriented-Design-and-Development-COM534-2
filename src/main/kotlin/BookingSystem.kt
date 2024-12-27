@@ -29,6 +29,12 @@ class BookingSystem() {
     }
 
     fun signup(username: String, password: String) {
+        for (user in users) {
+            if (user.username == username) {
+                return
+            }
+        }
+
         Database.connect(
             "jdbc:sqlite:4kitsw10_COM534_2_database.db",
             "org.sqlite.JDBC"
