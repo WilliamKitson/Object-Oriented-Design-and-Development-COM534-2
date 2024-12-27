@@ -45,18 +45,6 @@ class BookingSystem() {
                 it[admin] = false
             }[AccountsTable.accountId]
         }
-
-        transaction {
-            AccountsTable.selectAll().forEach {
-                val user = User(
-                    it[AccountsTable.username],
-                    it[AccountsTable.password],
-                    it[AccountsTable.admin]
-                )
-
-                addUser(user)
-            }
-        }
     }
 
     fun addUser(u: User) {
