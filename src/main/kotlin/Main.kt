@@ -18,14 +18,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material.TextField
 import androidx.compose.material.Button
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
 fun App() {
+    loginWidget()
+    searchRoomsWidget()
+}
+
+@Composable
+fun loginWidget() {
     Column {
         Text("Hello, welcome to my COM534 2 project!")
         Text("Please sign up for an account or login below.")
@@ -71,6 +74,11 @@ fun App() {
     }
 }
 
+@Composable
+fun searchRoomsWidget() {
+
+}
+
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "4kitsw10 COM534_2") {
         App()
@@ -83,6 +91,8 @@ fun main() = application {
 
     transaction {
         SchemaUtils.create(RoomsTable)
+
+        RoomsTable.deleteAll()
 
         RoomsTable.insert {
             it[number] = 1
