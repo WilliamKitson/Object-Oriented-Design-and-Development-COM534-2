@@ -1,3 +1,4 @@
+import AccountsTable.accountId
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -17,6 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material.TextField
 import androidx.compose.material.Button
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 
 @Composable
 fun App() {
@@ -68,5 +74,25 @@ fun App() {
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "4kitsw10 COM534_2") {
         App()
+    }
+
+    Database.connect(
+        "jdbc:sqlite:4kitsw10_COM534_2_database.db",
+        "org.sqlite.JDBC"
+    )
+
+    transaction {
+        SchemaUtils.create(RoomsTable)
+
+        RoomsTable.insert {
+            it[number] = 1
+            it[building] = "The Spark"
+            it[computerType] = "MAC OS"
+            it[nComputers] = 15
+        }[RoomsTable.roomId]
+
+        RoomsTable.selectAll().forEach {
+            println(it)
+        }
     }
 }
