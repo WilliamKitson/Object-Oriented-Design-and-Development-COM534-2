@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2024. William E. Kitson.
+ */
+
+package domain
+
 class PasswordAuthenticator {
     fun valid(password: String): Boolean{
         if (!length(password)){
@@ -61,5 +67,25 @@ class PasswordAuthenticator {
         }
 
         return 0
+    }
+
+    fun getError(password: String): LastError {
+        if(!length(password)){
+            return LastError.PasswordTooShort
+        }
+
+        if(!uppercase(password)){
+            return LastError.PasswordNoUppercases
+        }
+
+        if(!lowercase(password)){
+            return LastError.PasswordNoLowercases
+        }
+
+        if(!numerals(password)){
+            return LastError.PasswordNoNumerals
+        }
+
+        return LastError.NoError
     }
 }

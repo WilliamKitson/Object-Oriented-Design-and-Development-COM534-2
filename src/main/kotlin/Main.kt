@@ -40,21 +40,29 @@ fun App() {
             label = { Text("Password") }
         )
 
-        Button (onClick = { println("Button clicked") }) {
+        val bookingSystem = BookingSystem()
+        var errors by remember { mutableStateOf("") }
+
+        Button (onClick = {
+            bookingSystem.login(username, password)
+            errors = bookingSystem.getLastError()
+        }) {
             Text("Login")
         }
 
-        Button (onClick = { BookingSystem().signup(username, password) }) {
+        Button (onClick = {
+            bookingSystem.signup(username, password)
+            errors = bookingSystem.getLastError()
+        }) {
             Text("register")
         }
+
+        Text(errors)
     }
 }
 
 fun main() = application {
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "4kitsw10 COM534_2"
-    ) {
+    Window(onCloseRequest = ::exitApplication, title = "4kitsw10 COM534_2") {
         App()
     }
 }

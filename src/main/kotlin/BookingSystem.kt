@@ -1,3 +1,5 @@
+import domain.LastError
+import domain.PasswordAuthenticator
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
@@ -8,6 +10,7 @@ class BookingSystem() {
     val users = mutableListOf<User>()
     val rooms = mutableListOf<Room>()
     var currentUser: User? = null
+    var lastError = LastError.NoError
 
     init {
         Database.connect(
@@ -35,7 +38,10 @@ class BookingSystem() {
             }
         }
 
-        if (!PasswordAuthenticator().valid(password)) {
+        val passwordAuthenticator = PasswordAuthenticator()
+
+        if (!passwordAuthenticator.valid(password)) {
+            lastError = passwordAuthenticator.getError(password)
             return
         }
 
@@ -66,6 +72,10 @@ class BookingSystem() {
         // which meets the criterion specified in the lambda, or null if no objects meet this criterion.
         currentUser = users.singleOrNull { it.username == username  && it.password == password }
         return currentUser
+    }
+
+    fun getLastError(): String {
+        return lastError.toString()
     }
 
     fun logout() {
