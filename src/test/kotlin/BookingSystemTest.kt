@@ -32,7 +32,7 @@ class BookingSystemTest {
         )
 
         transaction {
-            Accounts.deleteAll()
+            AccountsTable.deleteAll()
         }
     }
 }

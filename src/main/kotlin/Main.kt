@@ -84,31 +84,4 @@ fun main() = application {
     )
 
     print("bookings: ${bookingSystem.getAllBookingsForRoomAndDay("1", "Monday")}\n")
-
-    Database.connect(
-        "jdbc:sqlite:4kitsw10_COM534_2_database.db",
-        "org.sqlite.JDBC"
-    )
-
-    transaction {
-        SchemaUtils.create(Accounts)
-    }
-
-    var insertedId = 0
-
-    transaction {
-        insertedId = Accounts.insert {
-            it[username] = "test username"
-            it[password] = "test password"
-            it[admin] = true
-        }[Accounts.accountId]
-    }
-
-    println(insertedId)
-
-    transaction {
-        Accounts.selectAll().forEach {
-            println(it)
-        }
-    }
 }

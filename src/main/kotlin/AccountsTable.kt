@@ -1,6 +1,6 @@
 import org.jetbrains.exposed.sql.Table
 
-object Accounts: Table("Accounts") {
+object AccountsTable: Table("Accounts") {
     val accountId = integer("account_id").autoIncrement()
     val username = text("username")
     val password = text("password")

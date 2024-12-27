@@ -16,11 +16,11 @@ class BookingSystem() {
         )
 
         transaction {
-            Accounts.selectAll().forEach {
+            AccountsTable.selectAll().forEach {
                 val user = User(
-                    it[Accounts.username],
-                    it[Accounts.password],
-                    it[Accounts.admin]
+                    it[AccountsTable.username],
+                    it[AccountsTable.password],
+                    it[AccountsTable.admin]
                 )
 
                 addUser(user)
@@ -35,23 +35,23 @@ class BookingSystem() {
         )
 
         transaction {
-            SchemaUtils.create(Accounts)
+            SchemaUtils.create(AccountsTable)
         }
 
         transaction {
-            Accounts.insert {
-                it[Accounts.username] = username
-                it[Accounts.password] = password
+            AccountsTable.insert {
+                it[AccountsTable.username] = username
+                it[AccountsTable.password] = password
                 it[admin] = false
-            }[Accounts.accountId]
+            }[AccountsTable.accountId]
         }
 
         transaction {
-            Accounts.selectAll().forEach {
+            AccountsTable.selectAll().forEach {
                 val user = User(
-                    it[Accounts.username],
-                    it[Accounts.password],
-                    it[Accounts.admin]
+                    it[AccountsTable.username],
+                    it[AccountsTable.password],
+                    it[AccountsTable.admin]
                 )
 
                 addUser(user)
