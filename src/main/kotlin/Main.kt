@@ -9,79 +9,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.selectAll
+import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material.TextField
 
 @Composable
-@Preview
 fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
-
-    MaterialTheme {
-        Button(onClick = {
-            text = "Hello, Desktop!"
-        }) {
-            Text(text)
-        }
+    Column {
+        Text("Hello, welcome to my COM534 2 project!", color = Color.Red, fontStyle=FontStyle.Italic, fontFamily=FontFamily.Serif)
+        Text("Please sign up for an account or login below.")
+        Text("Remember, this project is linked to a database so registered accounts are persistent.")
     }
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+        onCloseRequest = ::exitApplication,
+        title = "4kitsw10 COM534_2"
+    ) {
         App()
     }
-
-    val bookingSystem = BookingSystem()
-
-    bookingSystem.addRoom(Room(
-        "1",
-        "Spark",
-        "Mac OS",
-        15
-    ))
-
-    bookingSystem.addRoom(Room(
-        "2",
-        "Spark",
-        "Windows PC",
-        25
-    ))
-
-    print("rooms: ${bookingSystem.rooms}\n")
-
-    bookingSystem.addUser(User(
-        "BEELZEBLUBBER",
-        "20CharactersOrMore20",
-        true
-    ))
-
-    bookingSystem.addUser(User(
-        "Hillsy",
-        "21CharactersOrMore21",
-        false
-    ))
-
-    print("users: ${bookingSystem.users}\n")
-
-    bookingSystem.login("Hillsy", "21CharactersOrMore21")
-
-    bookingSystem.bookRoom(
-        "1",
-        "Monday",
-        9
-    )
-
-    bookingSystem.logout()
-    bookingSystem.login("BEELZEBLUBBER", "20CharactersOrMore20")
-
-    bookingSystem.bookRoom(
-        "1",
-        "Monday",
-        9
-    )
-
-    print("bookings: ${bookingSystem.getAllBookingsForRoomAndDay("1", "Monday")}\n")
 }
