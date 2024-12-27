@@ -20,7 +20,7 @@ import androidx.compose.material.Button
 @Composable
 fun App() {
     Column {
-        Text("Hello, welcome to my COM534 2 project!", color = Color.Red, fontStyle=FontStyle.Italic, fontFamily=FontFamily.Serif)
+        Text("Hello, welcome to my COM534 2 project!")
         Text("Please sign up for an account or login below.")
         Text("Remember, this project is linked to a database so registered accounts are persistent.")
 
@@ -57,7 +57,7 @@ fun App() {
             Text("register")
         }
 
-        Text(errors)
+        Text(errors, color = Color.Red)
     }
 }
 
