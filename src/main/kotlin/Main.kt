@@ -28,4 +28,55 @@ fun main() = application {
     Window(onCloseRequest = ::exitApplication) {
         App()
     }
+
+    val bookingSystem = BookingSystem()
+
+    bookingSystem.addRoom(Room(
+        "1",
+        "Spark",
+        "Mac OS",
+        15
+    ))
+
+    bookingSystem.addRoom(Room(
+        "2",
+        "Spark",
+        "Windows PC",
+        25
+    ))
+
+    print("rooms: ${bookingSystem.rooms}\n")
+
+    bookingSystem.addUser(User(
+        "BEELZEBLUBBER",
+        "20CharactersOrMore20",
+        true
+    ))
+
+    bookingSystem.addUser(User(
+        "Hillsy",
+        "21CharactersOrMore21",
+        false
+    ))
+
+    print("users: ${bookingSystem.users}\n")
+
+    bookingSystem.login("Hillsy", "21CharactersOrMore21")
+
+    bookingSystem.bookRoom(
+        "1",
+        "Monday",
+        9
+    )
+
+    bookingSystem.logout()
+    bookingSystem.login("BEELZEBLUBBER", "20CharactersOrMore20")
+
+    bookingSystem.bookRoom(
+        "1",
+        "Monday",
+        9
+    )
+
+    print("bookings: ${bookingSystem.getAllBookingsForRoomAndDay("1", "Monday")}\n")
 }
