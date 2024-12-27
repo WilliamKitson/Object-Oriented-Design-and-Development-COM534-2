@@ -22,6 +22,20 @@ fun App() {
         Text("Hello, welcome to my COM534 2 project!", color = Color.Red, fontStyle=FontStyle.Italic, fontFamily=FontFamily.Serif)
         Text("Please sign up for an account or login below.")
         Text("Remember, this project is linked to a database so registered accounts are persistent.")
+
+        var text by remember { mutableStateOf("") }
+
+        TextField(
+            value = text,
+            onValueChange = { text = it },
+            label = { Text("Username") }
+        )
+
+        TextField(
+            value = text,
+            onValueChange = { text = it },
+            label = { Text("Password") }
+        )
     }
 }
 
