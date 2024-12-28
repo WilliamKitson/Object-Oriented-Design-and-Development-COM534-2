@@ -106,11 +106,11 @@ class SearchRoomsPage {
                 }
             }
 
-            val number = mutableListOf("Room Number")
-            val building = mutableListOf("Building")
-            val computerType = mutableListOf("Computer Type")
-            val nComputers = mutableListOf("Number of Computers")
-            val id = mutableListOf("TEMP")
+            val number = mutableListOf<String>()
+            val building = mutableListOf<String>()
+            val computerType = mutableListOf<String>()
+            val nComputers = mutableListOf<String>()
+            val id = mutableListOf<String>()
 
             transaction {
                 RoomsTable.selectAll().where {
