@@ -39,6 +39,17 @@ class SearchRoomsPage {
 
     @Composable
     fun render() {
+        Column {
+            renderDropdown(buildings)
+
+            Button (onClick = {}) {
+                Text("Add Room")
+            }
+        }
+    }
+
+    @Composable
+    private fun renderDropdown(dropdownItems: List<String>) {
         val isDropDownExpanded = remember {
             mutableStateOf(false)
         }
@@ -47,36 +58,31 @@ class SearchRoomsPage {
             mutableStateOf(0)
         }
 
-        Column {
-            Box {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable {
-                        isDropDownExpanded.value = true
+        Box {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable {
+                    isDropDownExpanded.value = true
+                }
+            ) {
+                Text(text = dropdownItems[itemPosition.value])
+            }
+        }
+        DropdownMenu(
+            expanded = isDropDownExpanded.value,
+            onDismissRequest = {
+                isDropDownExpanded.value = false
+            }) {
+            dropdownItems.forEachIndexed { index, item ->
+                DropdownMenuItem(
+                    onClick = {
+                        isDropDownExpanded.value = false
+                        itemPosition.value = index
+                    }, content = {
+                        Text(text = item)
                     }
-                ) {
-                    Text(text = buildings[itemPosition.value])
-                }
-            }
-            DropdownMenu(
-                expanded = isDropDownExpanded.value,
-                onDismissRequest = {
-                    isDropDownExpanded.value = false
-                }) {
-                buildings.forEachIndexed { index, building ->
-                    DropdownMenuItem(
-                        onClick = {
-                            isDropDownExpanded.value = false
-                            itemPosition.value = index
-                        }, content = {
-                            Text(text = building)
-                        }
-                    )
-                }
-            }
-            Button (onClick = {}) {
-                Text("Add Room")
+                )
             }
         }
     }
