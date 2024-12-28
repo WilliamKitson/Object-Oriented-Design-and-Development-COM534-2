@@ -64,16 +64,10 @@ class SearchRoomsPage {
             mutableStateOf(0)
         }
 
-        Box {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable {
-                    isDropDownExpanded.value = true
-                }
-            ) {
-                Text(text = dropdownItems[itemPosition.value])
-            }
+        Button(onClick = {
+            isDropDownExpanded.value = true
+        }){
+            Text(text = dropdownItems[itemPosition.value])
         }
         DropdownMenu(
             expanded = isDropDownExpanded.value,
