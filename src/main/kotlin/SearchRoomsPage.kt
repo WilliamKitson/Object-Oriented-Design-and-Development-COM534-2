@@ -71,6 +71,41 @@ class SearchRoomsPage {
                 }
             }
 
+            var selectedType by remember { mutableStateOf("") }
+
+            Row {
+                val isDropDownExpanded = remember {
+                    mutableStateOf(false)
+                }
+
+                val itemPosition = remember {
+                    mutableStateOf(0)
+                }
+
+                Button(onClick = {
+                    isDropDownExpanded.value = true
+                }){
+                    Text(text = computerTypes[itemPosition.value])
+                }
+                DropdownMenu(
+                    expanded = isDropDownExpanded.value,
+                    onDismissRequest = {
+                        isDropDownExpanded.value = false
+                    }) {
+                    computerTypes.forEachIndexed { index, item ->
+                        DropdownMenuItem(
+                            onClick = {
+                                isDropDownExpanded.value = false
+                                itemPosition.value = index
+                                selectedType = item
+                            }, content = {
+                                Text(text = item)
+                            }
+                        )
+                    }
+                }
+            }
+
             val number = mutableListOf("Room Number")
             val building = mutableListOf("Building")
             val computerType = mutableListOf("Computer Type")
@@ -79,7 +114,7 @@ class SearchRoomsPage {
             transaction {
                 RoomsTable.selectAll().where {
                     RoomsTable.building.eq(selectedBuilding).and {
-                        RoomsTable.computerType.eq("Windows PC")
+                        RoomsTable.computerType.eq(selectedType)
                     }
                 }.forEach {
                     number += it[RoomsTable.number].toString()
