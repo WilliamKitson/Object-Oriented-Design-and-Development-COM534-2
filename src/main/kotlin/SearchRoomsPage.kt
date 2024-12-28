@@ -43,6 +43,9 @@ class SearchRoomsPage {
             Row {
                 renderDropdown(buildings)
                 renderDropdown(computerTypes)
+                Button (onClick = {}) {
+                    Text("Search")
+                }
             }
 
             Button (onClick = {}) {
