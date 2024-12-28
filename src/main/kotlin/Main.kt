@@ -7,7 +7,8 @@ import org.jetbrains.exposed.sql.*
 @Composable
 fun App() {
     //LoginPage().render()
-    SearchRoomsPage().render()
+    //SearchRoomsPage().render()
+    AddRoomPage().render()
 }
 
 fun main() = application {
