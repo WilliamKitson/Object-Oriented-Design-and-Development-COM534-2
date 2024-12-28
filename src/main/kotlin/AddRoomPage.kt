@@ -41,7 +41,12 @@ class AddRoomPage {
             )
 
             Button (onClick = {
-                println("Add new room")
+                BookingSystem().addRoom(Room(
+                    number,
+                    building,
+                    computerType,
+                    nComputers.toInt(),
+                ))
             }) {
                 Text("Save Room")
             }
