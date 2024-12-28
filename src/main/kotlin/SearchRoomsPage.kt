@@ -17,7 +17,8 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class SearchRoomsPage {
-    var buildings = listOf<String>()
+    private var buildings = listOf<String>()
+    private var computerTypes = listOf<String>()
 
     init {
         Database.connect(
@@ -28,10 +29,12 @@ class SearchRoomsPage {
         transaction {
             RoomsTable.selectAll().forEach {
                 buildings += it[RoomsTable.building]
+                computerTypes += it[RoomsTable.computerType]
             }
         }
 
         buildings = buildings.distinct()
+        computerTypes = computerTypes.distinct()
     }
 
     @Composable
@@ -61,7 +64,6 @@ class SearchRoomsPage {
                 onDismissRequest = {
                     isDropDownExpanded.value = false
                 }) {
-
                 buildings.forEachIndexed { index, building ->
                     DropdownMenuItem(
                         onClick = {
