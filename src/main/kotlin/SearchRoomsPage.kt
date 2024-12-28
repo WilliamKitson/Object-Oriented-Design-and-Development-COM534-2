@@ -110,6 +110,7 @@ class SearchRoomsPage {
             val building = mutableListOf("Building")
             val computerType = mutableListOf("Computer Type")
             val nComputers = mutableListOf("Number of Computers")
+            val id = mutableListOf("TEMP")
 
             transaction {
                 RoomsTable.selectAll().where {
@@ -121,6 +122,7 @@ class SearchRoomsPage {
                     building += it[RoomsTable.building]
                     computerType += it[RoomsTable.computerType]
                     nComputers += it[RoomsTable.nComputers].toString()
+                    id += it[RoomsTable.roomId].toString()
                 }
             }
 
@@ -136,6 +138,11 @@ class SearchRoomsPage {
                 }
                 LazyColumn {
                     items(nComputers) { curItem -> Text(curItem) }
+                }
+                LazyColumn {
+                    items(nComputers) { curItem -> Button (onClick = { println(curItem) }) {
+                        Text("View")
+                    } }
                 }
             }
 
