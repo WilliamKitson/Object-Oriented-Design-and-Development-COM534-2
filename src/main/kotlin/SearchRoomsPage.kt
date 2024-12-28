@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import org.jetbrains.exposed.sql.and
 
 class SearchRoomsPage {
     private var buildings = listOf<String>()
@@ -94,7 +95,11 @@ class SearchRoomsPage {
         val nComputers = mutableListOf<String>()
 
         transaction {
-            RoomsTable.selectAll().forEach {
+            RoomsTable.selectAll().where {
+                RoomsTable.building.eq("Library").and {
+                    RoomsTable.computerType.eq("Windows PC")
+                }
+            }.forEach {
                 number += it[RoomsTable.number].toString()
                 building += it[RoomsTable.building]
                 computerType += it[RoomsTable.computerType]
