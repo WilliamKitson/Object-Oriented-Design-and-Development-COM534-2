@@ -47,11 +47,13 @@ class SearchRoomsPage {
 
             val number = mutableListOf<String>()
             val building = mutableListOf<String>()
+            val computerType = mutableListOf<String>()
 
             transaction {
                 RoomsTable.selectAll().forEach {
                     number += it[RoomsTable.number].toString()
                     building += it[RoomsTable.building]
+                    computerType += it[RoomsTable.computerType]
                 }
             }
 
@@ -62,9 +64,10 @@ class SearchRoomsPage {
                 LazyColumn {
                     items(building) { curItem -> Text(curItem) }
                 }
+                LazyColumn {
+                    items(computerType) { curItem -> Text(curItem) }
+                }
             }
-
-
 
             Button (onClick = {}) {
                 Text("Add Room")
