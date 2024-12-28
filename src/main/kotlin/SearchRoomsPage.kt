@@ -40,7 +40,10 @@ class SearchRoomsPage {
     @Composable
     fun render() {
         Column {
-            renderDropdown(buildings)
+            Row {
+                renderDropdown(buildings)
+                renderDropdown(computerTypes)
+            }
 
             Button (onClick = {}) {
                 Text("Add Room")
