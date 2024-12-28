@@ -19,22 +19,4 @@ fun main() = application {
         "jdbc:sqlite:4kitsw10_COM534_2_database.db",
         "org.sqlite.JDBC"
     )
-    /*
-    transaction {
-        SchemaUtils.create(RoomsTable)
-
-        RoomsTable.deleteAll()
-
-        RoomsTable.insert {
-            it[number] = 2
-            it[building] = "The Spark"
-            it[computerType] = "Linux"
-            it[nComputers] = 50
-        }[RoomsTable.roomId]
-
-        RoomsTable.selectAll().forEach {
-            println(it)
-        }
-    }
-    */
 }

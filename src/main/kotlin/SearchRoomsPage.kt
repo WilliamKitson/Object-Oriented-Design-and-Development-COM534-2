@@ -30,6 +30,8 @@ class SearchRoomsPage {
                 buildings += it[RoomsTable.building]
             }
         }
+
+        buildings = buildings.distinct()
     }
 
     @Composable
