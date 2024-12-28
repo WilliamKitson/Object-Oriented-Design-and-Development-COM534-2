@@ -36,72 +36,72 @@ class SearchRoomsPage {
     @Composable
     fun render() {
         Column {
-            var selectedBuilding by remember { mutableStateOf("") }
+            var selectedBuilding by remember { mutableStateOf(buildings.first()) }
+            var selectedType by remember { mutableStateOf(computerTypes.first()) }
 
             Row {
-                val isDropDownExpanded = remember {
-                    mutableStateOf(false)
-                }
+                Row {
+                    val isDropDownExpanded = remember {
+                        mutableStateOf(false)
+                    }
 
-                val itemPosition = remember {
-                    mutableStateOf(0)
-                }
+                    val itemPosition = remember {
+                        mutableStateOf(0)
+                    }
 
-                Button(onClick = {
-                    isDropDownExpanded.value = true
-                }){
-                    Text(text = buildings[itemPosition.value])
-                }
-                DropdownMenu(
-                    expanded = isDropDownExpanded.value,
-                    onDismissRequest = {
-                        isDropDownExpanded.value = false
-                    }) {
-                    buildings.forEachIndexed { index, item ->
-                        DropdownMenuItem(
-                            onClick = {
-                                isDropDownExpanded.value = false
-                                itemPosition.value = index
-                                selectedBuilding = item
-                            }, content = {
-                                Text(text = item)
-                            }
-                        )
+                    Button(onClick = {
+                        isDropDownExpanded.value = true
+                    }){
+                        Text(text = buildings[itemPosition.value])
+                    }
+                    DropdownMenu(
+                        expanded = isDropDownExpanded.value,
+                        onDismissRequest = {
+                            isDropDownExpanded.value = false
+                        }) {
+                        buildings.forEachIndexed { index, item ->
+                            DropdownMenuItem(
+                                onClick = {
+                                    isDropDownExpanded.value = false
+                                    itemPosition.value = index
+                                    selectedBuilding = item
+                                }, content = {
+                                    Text(text = item)
+                                }
+                            )
+                        }
                     }
                 }
-            }
+                Row {
+                    val isDropDownExpanded = remember {
+                        mutableStateOf(false)
+                    }
 
-            var selectedType by remember { mutableStateOf("") }
+                    val itemPosition = remember {
+                        mutableStateOf(0)
+                    }
 
-            Row {
-                val isDropDownExpanded = remember {
-                    mutableStateOf(false)
-                }
-
-                val itemPosition = remember {
-                    mutableStateOf(0)
-                }
-
-                Button(onClick = {
-                    isDropDownExpanded.value = true
-                }){
-                    Text(text = computerTypes[itemPosition.value])
-                }
-                DropdownMenu(
-                    expanded = isDropDownExpanded.value,
-                    onDismissRequest = {
-                        isDropDownExpanded.value = false
-                    }) {
-                    computerTypes.forEachIndexed { index, item ->
-                        DropdownMenuItem(
-                            onClick = {
-                                isDropDownExpanded.value = false
-                                itemPosition.value = index
-                                selectedType = item
-                            }, content = {
-                                Text(text = item)
-                            }
-                        )
+                    Button(onClick = {
+                        isDropDownExpanded.value = true
+                    }){
+                        Text(text = computerTypes[itemPosition.value])
+                    }
+                    DropdownMenu(
+                        expanded = isDropDownExpanded.value,
+                        onDismissRequest = {
+                            isDropDownExpanded.value = false
+                        }) {
+                        computerTypes.forEachIndexed { index, item ->
+                            DropdownMenuItem(
+                                onClick = {
+                                    isDropDownExpanded.value = false
+                                    itemPosition.value = index
+                                    selectedType = item
+                                }, content = {
+                                    Text(text = item)
+                                }
+                            )
+                        }
                     }
                 }
             }
