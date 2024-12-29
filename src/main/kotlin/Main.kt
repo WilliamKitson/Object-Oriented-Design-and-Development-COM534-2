@@ -6,18 +6,13 @@ import org.jetbrains.exposed.sql.*
 
 @Composable
 fun App() {
-    //LoginPage().render()
-    //SearchRoomsPage().render()
-    AddRoomPage().render()
+    LoginPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
+    SearchRoomsPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
+    AddRoomPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
 }
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "4kitsw10 COM534_2") {
         App()
     }
-
-    Database.connect(
-        "jdbc:sqlite:4kitsw10_COM534_2_database.db",
-        "org.sqlite.JDBC"
-    )
 }

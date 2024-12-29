@@ -12,13 +12,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import org.jetbrains.exposed.sql.and
 
-class SearchRoomsPage {
+class SearchRoomsPage(private val connection: String) {
     private var buildings = listOf<String>()
     private var computerTypes = listOf<String>()
 
     init {
         Database.connect(
-            "jdbc:sqlite:4kitsw10_COM534_2_database.db",
+            connection,
             "org.sqlite.JDBC"
         )
 

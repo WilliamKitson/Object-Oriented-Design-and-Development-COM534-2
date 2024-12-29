@@ -4,6 +4,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
 
 class LoginRegisterTest {
+    private val connection = "jdbc:sqlite:4kitsw10_COM534_2_database_test.db"
+
     @Test
     fun testSignupValidStudent() {
         clearAccounts()
@@ -15,7 +17,7 @@ class LoginRegisterTest {
                 false
             )
 
-            val bookingSystem = BookingSystem()
+            val bookingSystem = BookingSystem(connection)
 
             bookingSystem.signup(input.username, input.password)
             assert(accountsMatch(input, bookingSystem.users[i]))
@@ -60,8 +62,8 @@ class LoginRegisterTest {
                 false
             )
 
-            BookingSystem().signup(input.username, input.password)
-            assert(accountsMatch(input, BookingSystem().users[i]))
+            BookingSystem(connection).signup(input.username, input.password)
+            assert(accountsMatch(input, BookingSystem(connection).users[i]))
         }
     }
 
@@ -76,41 +78,41 @@ class LoginRegisterTest {
                 false
             )
 
-            BookingSystem().signup(input.username, input.password)
+            BookingSystem(connection).signup(input.username, input.password)
         }
 
-        assert(BookingSystem().users.count() == 1)
+        assert(BookingSystem(connection).users.count() == 1)
     }
 
     @Test
     fun testShortPassword() {
         clearAccounts()
 
-        BookingSystem().signup("student", "t00Sh0rt")
-        assert(BookingSystem().users.isEmpty())
+        BookingSystem(connection).signup("student", "t00Sh0rt")
+        assert(BookingSystem(connection).users.isEmpty())
     }
 
     @Test
     fun testLowercasePassword() {
         clearAccounts()
 
-        BookingSystem().signup("student", "20CHARACTERSORMORE20")
-        assert(BookingSystem().users.isEmpty())
+        BookingSystem(connection).signup("student", "20CHARACTERSORMORE20")
+        assert(BookingSystem(connection).users.isEmpty())
     }
 
     @Test
     fun testUppercasePassword() {
         clearAccounts()
 
-        BookingSystem().signup("student", "20charactersormore20")
-        assert(BookingSystem().users.isEmpty())
+        BookingSystem(connection).signup("student", "20charactersormore20")
+        assert(BookingSystem(connection).users.isEmpty())
     }
 
     @Test
     fun testNumeralsPassword() {
         clearAccounts()
 
-        BookingSystem().signup("student", "charactersormorechar")
-        assert(BookingSystem().users.isEmpty())
+        BookingSystem(connection).signup("student", "charactersormorechar")
+        assert(BookingSystem(connection).users.isEmpty())
     }
 }

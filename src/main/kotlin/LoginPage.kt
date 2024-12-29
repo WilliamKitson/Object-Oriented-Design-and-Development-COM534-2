@@ -5,8 +5,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import java.awt.Component
 
-class LoginPage {
+class LoginPage(private val connection: String) {
     @Composable
     fun render() {
         Column {
@@ -33,7 +34,7 @@ class LoginPage {
             var errors by remember { mutableStateOf("") }
 
             Row {
-                val bookingSystem = BookingSystem()
+                val bookingSystem = BookingSystem(connection)
 
                 Button (onClick = {
                     bookingSystem.login(username, password)

@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class BookingSystem() {
+class BookingSystem(private val connection: String) {
     val users = mutableListOf<User>()
     val rooms = mutableListOf<Room>()
     var currentUser: User? = null
@@ -14,7 +14,7 @@ class BookingSystem() {
 
     init {
         Database.connect(
-            "jdbc:sqlite:4kitsw10_COM534_2_database.db",
+            connection,
             "org.sqlite.JDBC"
         )
 
@@ -56,11 +56,6 @@ class BookingSystem() {
             return
         }
 
-        Database.connect(
-            "jdbc:sqlite:4kitsw10_COM534_2_database.db",
-            "org.sqlite.JDBC"
-        )
-
         transaction {
             SchemaUtils.create(AccountsTable)
 
@@ -94,11 +89,6 @@ class BookingSystem() {
     }
 
     fun addRoom(room: Room) {
-        Database.connect(
-            "jdbc:sqlite:4kitsw10_COM534_2_database.db",
-            "org.sqlite.JDBC"
-        )
-
         transaction {
             SchemaUtils.create(RoomsTable)
 

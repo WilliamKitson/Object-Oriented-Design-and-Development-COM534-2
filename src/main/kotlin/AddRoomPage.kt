@@ -3,8 +3,9 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.input.TextFieldValue
 
-class AddRoomPage {
+class AddRoomPage(private val connection: String) {
     @Composable
     fun render() {
         Column {
@@ -41,7 +42,7 @@ class AddRoomPage {
             )
 
             Button (onClick = {
-                BookingSystem().addRoom(Room(
+                BookingSystem(connection).addRoom(Room(
                     number,
                     building,
                     computerType,
