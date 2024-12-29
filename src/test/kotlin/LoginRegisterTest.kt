@@ -26,7 +26,7 @@ class LoginRegisterTest {
 
     private fun clearAccounts() {
         Database.connect(
-            "jdbc:sqlite:4kitsw10_COM534_2_database.db",
+            connection,
             "org.sqlite.JDBC"
         )
 
