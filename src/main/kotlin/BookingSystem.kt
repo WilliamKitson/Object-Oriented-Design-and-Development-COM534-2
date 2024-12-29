@@ -28,17 +28,6 @@ class BookingSystem() {
 
                 addUser(user)
             }
-
-            RoomsTable.selectAll().forEach {
-                val room = Room(
-                    it[RoomsTable.number].toString(),
-                    it[RoomsTable.building],
-                    it[RoomsTable.computerType],
-                    it[RoomsTable.nComputers]
-                )
-
-                addRoom(room)
-            }
         }
     }
 
@@ -94,22 +83,6 @@ class BookingSystem() {
     }
 
     fun addRoom(room: Room) {
-        Database.connect(
-            "jdbc:sqlite:4kitsw10_COM534_2_database.db",
-            "org.sqlite.JDBC"
-        )
-
-        transaction {
-            SchemaUtils.create(RoomsTable)
-
-            RoomsTable.insert {
-                it[RoomsTable.number] = room.number.toInt()
-                it[RoomsTable.building] = room.building
-                it[RoomsTable.computerType] = room.compType
-                it[RoomsTable.nComputers] = room.computers.size
-            }[RoomsTable.roomId]
-        }
-
         rooms.add(room)
     }
 
