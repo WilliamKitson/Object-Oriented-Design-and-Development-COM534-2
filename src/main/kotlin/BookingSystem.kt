@@ -37,7 +37,7 @@ class BookingSystem() {
                     it[RoomsTable.nComputers]
                 )
 
-                addRoom(room)
+                rooms.add(room)
             }
         }
     }

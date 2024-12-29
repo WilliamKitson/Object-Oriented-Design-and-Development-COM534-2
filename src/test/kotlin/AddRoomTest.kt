@@ -47,7 +47,7 @@ class AddRoomTest {
             )
 
             BookingSystem().addRoom(input)
-            assert(BookingSystem().rooms[i] == input)
+            assert(BookingSystem().rooms[i].toString() == input.toString())
         }
     }
 }
