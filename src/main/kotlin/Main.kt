@@ -5,7 +5,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
-
 @Composable
 fun App() {
     val navController = rememberNavController()
@@ -21,6 +20,8 @@ fun App() {
             AddRoomPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
         }
     }
+
+    navController.navigate("searchRooms")
 }
 
 fun main() = application {
