@@ -33,4 +33,21 @@ class AddRoomTest {
             RoomsTable.deleteAll()
         }
     }
+
+    @Test
+    fun testLoadRoom() {
+        clearRooms()
+
+        for (i in 0..5) {
+            val input = Room(
+                i.toString(),
+                i.toString(),
+                i.toString(),
+                i * 5
+            )
+
+            BookingSystem().addRoom(input)
+            assert(BookingSystem().rooms[i] == input)
+        }
+    }
 }
