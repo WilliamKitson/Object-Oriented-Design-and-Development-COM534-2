@@ -22,6 +22,7 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:3.47.0.0")
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
 }
 
 tasks.test {

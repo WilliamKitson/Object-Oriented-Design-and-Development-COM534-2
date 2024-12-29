@@ -1,14 +1,26 @@
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import org.jetbrains.exposed.sql.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 
 @Composable
 fun App() {
-    LoginPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
-    SearchRoomsPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
-    AddRoomPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
+    val navController = rememberNavController()
+
+    NavHost(navController, startDestination = "login") {
+        composable(route = "login") {
+            LoginPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
+        }
+        composable(route = "searchRooms") {
+            SearchRoomsPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
+        }
+        composable(route = "addRooms") {
+            AddRoomPage("jdbc:sqlite:4kitsw10_COM534_2_database.db").render()
+        }
+    }
 }
 
 fun main() = application {
