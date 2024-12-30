@@ -54,11 +54,19 @@ class LoginPage(private val connection: String) {
                         }
 
                         Button (onClick = {
-                            bookingSystem.signup(username, password)
+                            bookingSystem.signupStudent(username, password)
                             errors = bookingSystem.getLastError()
                             navController.navigate("searchRooms")
                         }) {
-                            Text("register")
+                            Text("register student")
+                        }
+
+                        Button (onClick = {
+                            bookingSystem.signupAdministrator(username, password)
+                            errors = bookingSystem.getLastError()
+                            navController.navigate("searchRooms")
+                        }) {
+                            Text("register admin")
                         }
                     }
 

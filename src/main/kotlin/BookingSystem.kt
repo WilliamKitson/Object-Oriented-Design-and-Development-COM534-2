@@ -42,7 +42,7 @@ class BookingSystem(private val connection: String) {
         }
     }
 
-    fun signup(username: String, password: String) {
+    fun signupStudent(username: String, password: String) {
         for (user in users) {
             if (user.username == username) {
                 return
