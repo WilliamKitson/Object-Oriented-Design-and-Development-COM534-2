@@ -21,6 +21,13 @@ class AdminPage(private val connection: String, private val bookingSystem: Booki
                     }) {
                         Text("Add Room")
                     }
+
+                    Button (onClick = {
+                        navController.navigate("editRooms")
+                    }) {
+                        Text("Edit Rooms")
+                    }
+
                     Button (onClick = {
                         navController.navigate("login")
                     }) {
@@ -30,6 +37,9 @@ class AdminPage(private val connection: String, private val bookingSystem: Booki
             }
             composable(route = "addRoom") {
                 AddRoomPage(connection, bookingSystem).render()
+            }
+            composable(route = "editRooms") {
+                EditRoomsPage(connection, bookingSystem).render()
             }
             composable(route = "login") {
                 LoginPage(connection).render()
