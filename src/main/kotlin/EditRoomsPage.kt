@@ -19,6 +19,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class EditRoomsPage(private val connection: String, private val bookingSystem: BookingSystem) {
     private var rooms = listOf<Room>()
+    private var editedRoom = ""
 
     init {
         Database.connect(
@@ -62,6 +63,7 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                                 TableCell(text = it.number, weight = columnWeight)
                                 TableCell(text = it.building, weight = columnWeight)
                                 TableButton(text = it.compType, weight = columnWeight, onClick = {
+                                    editedRoom = it.toString()
                                     isDialogOpen = true
                                 })
                                 TableCell(text = it.computers.size.toString(), weight = columnWeight)
@@ -90,8 +92,14 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                                 Text("Back")
                             }
                         },
-                        title = { Text("Edit Computer Type") },
-                        text = { Text("Lore ipsum") },
+                        title = { Text("Edit $editedRoom") },
+                        text = {
+                            Button(onClick = {
+                            isDialogOpen = false
+                        }) {
+                            Text("Save")
+                        }
+                               },
                     )
                 }
             }
