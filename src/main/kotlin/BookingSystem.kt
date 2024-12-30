@@ -69,6 +69,33 @@ class BookingSystem(private val connection: String) {
         addUser(User(username, password, false))
     }
 
+    fun signupAdministrator(username: String, password: String) {
+        for (user in users) {
+            if (user.username == username) {
+                return
+            }
+        }
+
+        val passwordAuthenticator = PasswordAuthenticator()
+
+        if (!passwordAuthenticator.valid(password)) {
+            lastError = passwordAuthenticator.getError(password)
+            return
+        }
+
+        transaction {
+            SchemaUtils.create(AccountsTable)
+
+            AccountsTable.insert {
+                it[AccountsTable.username] = username
+                it[AccountsTable.password] = password
+                it[admin] = true
+            }[AccountsTable.accountId]
+        }
+
+        addUser(User(username, password, true))
+    }
+
     fun addUser(u: User) {
         users.add(u)
     }

@@ -3,23 +3,23 @@ import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
 
-class LoginRegisterTest {
+class RegisterAdministratorsTests {
     private val connection = "jdbc:sqlite:4kitsw10_COM534_2_database_test.db"
 
     @Test
-    fun testSignupValidStudent() {
+    fun testValidSignup() {
         clearAccounts()
 
         for (i in 0..5) {
             val input = User(
-                "student$i",
+                "administrator$i",
                 "20CharactersOrMore2$i",
-                false
+                true
             )
 
             val bookingSystem = BookingSystem(connection)
 
-            bookingSystem.signup(input.username, input.password)
+            bookingSystem.signupAdministrator(input.username, input.password)
             assert(accountsMatch(input, bookingSystem.users[i]))
         }
     }
@@ -52,17 +52,17 @@ class LoginRegisterTest {
     }
 
     @Test
-    fun testLoadStudent() {
+    fun testLoadAdministrators() {
         clearAccounts()
 
         for (i in 0..5) {
             val input = User(
-                "student$i",
+                "administrator$i",
                 "20CharactersOrMore2$i",
-                false
+                true
             )
 
-            BookingSystem(connection).signup(input.username, input.password)
+            BookingSystem(connection).signupAdministrator(input.username, input.password)
             assert(accountsMatch(input, BookingSystem(connection).users[i]))
         }
     }
@@ -73,12 +73,12 @@ class LoginRegisterTest {
 
         for (i in 0..5) {
             val input = User(
-                "student",
+                "administrator",
                 "20CharactersOrMore2$i",
-                false
+                true
             )
 
-            BookingSystem(connection).signup(input.username, input.password)
+            BookingSystem(connection).signupAdministrator(input.username, input.password)
         }
 
         assert(BookingSystem(connection).users.count() == 1)
@@ -88,7 +88,7 @@ class LoginRegisterTest {
     fun testShortPassword() {
         clearAccounts()
 
-        BookingSystem(connection).signup("student", "t00Sh0rt")
+        BookingSystem(connection).signupAdministrator("administrator", "t00Sh0rt")
         assert(BookingSystem(connection).users.isEmpty())
     }
 
@@ -96,7 +96,7 @@ class LoginRegisterTest {
     fun testLowercasePassword() {
         clearAccounts()
 
-        BookingSystem(connection).signup("student", "20CHARACTERSORMORE20")
+        BookingSystem(connection).signupAdministrator("administrator", "20CHARACTERSORMORE20")
         assert(BookingSystem(connection).users.isEmpty())
     }
 
@@ -104,7 +104,7 @@ class LoginRegisterTest {
     fun testUppercasePassword() {
         clearAccounts()
 
-        BookingSystem(connection).signup("student", "20charactersormore20")
+        BookingSystem(connection).signupAdministrator("administrator", "20charactersormore20")
         assert(BookingSystem(connection).users.isEmpty())
     }
 
@@ -112,7 +112,7 @@ class LoginRegisterTest {
     fun testNumeralsPassword() {
         clearAccounts()
 
-        BookingSystem(connection).signup("student", "charactersormorechar")
+        BookingSystem(connection).signupAdministrator("administrator", "charactersormorechar")
         assert(BookingSystem(connection).users.isEmpty())
     }
 }
