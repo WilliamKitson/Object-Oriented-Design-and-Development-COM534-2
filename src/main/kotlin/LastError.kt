@@ -11,7 +11,8 @@ enum class LastError {
     PasswordNoUppercases,
     PasswordNoLowercases,
     PasswordNoNumerals,
-    UsernameUnregistered;
+    UsernameUnregistered,
+    PasswordIncorrect,;
 
     override fun toString(): String {
         return when (this) {
@@ -22,6 +23,7 @@ enum class LastError {
             PasswordNoLowercases -> "Error: password no lowercases."
             PasswordNoNumerals -> "Error: password no numerals."
             UsernameUnregistered -> "Error: username unregisted."
+            PasswordIncorrect -> "Error: password incorrect."
         }
     }
 }

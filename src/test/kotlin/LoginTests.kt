@@ -45,4 +45,20 @@ class LoginTests {
         bookingSystem.login("student", "password")
         assert(bookingSystem.getLastError() == "Error: username unregisted.")
     }
+
+    @Test
+    fun testLoginPasswordError() {
+        clearAccounts()
+
+        val user = User(
+            "student",
+            "20CharactersOrMore20"
+        )
+
+        val bookingSystem = BookingSystem(connection)
+        bookingSystem.signupStudent(user.username, user.password)
+
+        bookingSystem.login(user.username, "")
+        assert(bookingSystem.getLastError() == "Error: password incorrect.")
+    }
 }

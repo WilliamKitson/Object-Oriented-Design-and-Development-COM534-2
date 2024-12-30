@@ -105,16 +105,25 @@ class BookingSystem(private val connection: String) {
     }
 
     fun login(username: String, password: String) : User? {
+        lastError = calculateLoginError(username, password)
+        currentUser = users.singleOrNull { it.username == username  && it.password == password }
+        return currentUser
+    }
+
+    private fun calculateLoginError(username: String, password: String): LastError {
         lastError = LastError.UsernameUnregistered
 
         for (user in users) {
             if (user.username == username) {
-                lastError = LastError.NoError
+                if (user.password != password) {
+                    return LastError.PasswordIncorrect
+                }
+
+                return LastError.NoError
             }
         }
 
-        currentUser = users.singleOrNull { it.username == username  && it.password == password }
-        return currentUser
+        return LastError.UsernameUnregistered
     }
 
     fun getLastError(): String {
