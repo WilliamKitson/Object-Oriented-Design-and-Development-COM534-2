@@ -12,46 +12,58 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class EditRoomsPage(private val connection: String, private val bookingSystem: BookingSystem) {
+    private var rooms = listOf<Room>()
+
+    init {
+        Database.connect(
+            connection,
+            "org.sqlite.JDBC"
+        )
+
+        transaction {
+            RoomsTable.selectAll().forEach {
+                rooms += Room(
+                    it[RoomsTable.number].toString(),
+                    it[RoomsTable.building],
+                    it[RoomsTable.computerType],
+                    it[RoomsTable.nComputers].toInt()
+                )
+            }
+        }
+    }
+
     @Composable
     fun render() {
         val navController = rememberNavController()
 
         NavHost(navController, startDestination = "editRooms") {
             composable("editRooms") {
-
-
-
-
-                val tableData = (1..100).mapIndexed { index, item ->
-                    index to "Item $index"
-                }
-                // Each cell of a column must have the same weight.
-                val column1Weight = .3f // 30%
-                val column2Weight = .7f // 70%
-                // The LazyColumn will be our table. Notice the use of the weights below
-                LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
-                    // Here is the header
-                    item {
-                        Row(Modifier.background(Color.Gray)) {
-                            TableCell(text = "Column 1", weight = column1Weight)
-                            TableCell(text = "Column 2", weight = column2Weight)
-                        }
-                    }
-                    // Here are all the lines of your table.
-                    items(tableData) {
-                        val (id, text) = it
-                        Row(Modifier.fillMaxWidth()) {
-                            TableCell(text = id.toString(), weight = column1Weight)
-                            TableCell(text = text, weight = column2Weight)
-                        }
-                    }
-                }
-
-
-
                 Column {
+                    val columnWeight = .3f
+
+                    LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
+                        item {
+                            Row(Modifier.background(Color.Gray)) {
+                                TableCell(text = "Room Number", weight = columnWeight)
+                                TableCell(text = "Building", weight = columnWeight)
+                                TableCell(text = "Computer OS", weight = columnWeight)
+                                TableCell(text = "Number of Computers", weight = columnWeight)
+                            }
+                        }
+                        items(rooms) {
+                            Row(Modifier.fillMaxWidth()) {
+                                TableCell(text = it.number, weight = columnWeight)
+                                TableCell(text = it.building, weight = columnWeight)
+                                TableCell(text = it.compType, weight = columnWeight)
+                                TableCell(text = it.computers.size.toString(), weight = columnWeight)
+                            }
+                        }
+                    }
                     Button(onClick = {
                         navController.navigate("adminPage")
                     }) {
