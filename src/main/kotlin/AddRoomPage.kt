@@ -55,14 +55,20 @@ class AddRoomPage(private val connection: String, private val bookingSystem: Boo
                             nComputers.toInt(),
                         ))
 
-                        navController.navigate("searchRooms")
+                        navController.navigate("adminPage")
                     }) {
                         Text("Save Room")
                     }
+
+                    Button (onClick = {
+                        navController.navigate("adminPage")
+                    }) {
+                        Text("Back")
+                    }
                 }
             }
-            composable("searchRooms") {
-                StudentPage(connection, bookingSystem).render()
+            composable("adminPage") {
+                AdminPage(connection, bookingSystem).render()
             }
         }
     }
