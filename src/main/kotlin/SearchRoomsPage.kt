@@ -173,7 +173,7 @@ class SearchRoomsPage(private val connection: String, private val bookingSystem:
                 }
             }
             composable(route = "addRoom") {
-                AddRoomPage(connection).render()
+                AddRoomPage(connection, bookingSystem).render()
             }
             composable(route = "login") {
                 LoginPage(connection).render()

@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
-class AddRoomPage(private val connection: String) {
+class AddRoomPage(private val connection: String, private val bookingSystem: BookingSystem) {
     @Composable
     fun render() {
         val navController = rememberNavController()
@@ -49,7 +49,7 @@ class AddRoomPage(private val connection: String) {
                     )
 
                     Button (onClick = {
-                        BookingSystem(connection).addRoom(Room(
+                        bookingSystem.addRoom(Room(
                             number,
                             building,
                             computerType,
@@ -63,7 +63,7 @@ class AddRoomPage(private val connection: String) {
                 }
             }
             composable("searchRooms") {
-                //SearchRoomsPage(connection).render()
+                SearchRoomsPage(connection, bookingSystem).render()
             }
         }
     }
