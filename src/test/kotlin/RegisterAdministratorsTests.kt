@@ -1,4 +1,5 @@
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.Test
@@ -31,6 +32,8 @@ class RegisterAdministratorsTests {
         )
 
         transaction {
+            SchemaUtils.create(AccountsTable)
+            SchemaUtils.create(RoomsTable)
             AccountsTable.deleteAll()
         }
     }
