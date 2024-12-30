@@ -10,6 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 class LoginPage(private val connection: String) {
+    private val bookingSystem = BookingSystem(connection)
+
     @Composable
     fun render() {
         val navController = rememberNavController()
@@ -40,13 +42,13 @@ class LoginPage(private val connection: String) {
                     var errors by remember { mutableStateOf("") }
 
                     Row {
-                        val bookingSystem = BookingSystem(connection)
-
                         Button (onClick = {
                             bookingSystem.login(username, password)
                             errors = bookingSystem.getLastError()
-                            navController.navigate("searchRooms")
 
+                            if (bookingSystem.currentUser != null) {
+                                navController.navigate("searchRooms")
+                            }
                         }) {
                             Text("Login")
                         }
@@ -64,7 +66,7 @@ class LoginPage(private val connection: String) {
                 }
             }
             composable(route = "searchRooms") {
-                SearchRoomsPage(connection).render()
+                SearchRoomsPage(connection, bookingSystem).render()
             }
         }
     }

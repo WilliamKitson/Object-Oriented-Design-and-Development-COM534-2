@@ -63,7 +63,7 @@ class AddRoomPage(private val connection: String) {
                 }
             }
             composable("searchRooms") {
-                SearchRoomsPage(connection).render()
+                //SearchRoomsPage(connection).render()
             }
         }
     }

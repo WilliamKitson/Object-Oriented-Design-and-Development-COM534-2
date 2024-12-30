@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.exposed.sql.and
 
-class SearchRoomsPage(private val connection: String) {
+class SearchRoomsPage(private val connection: String, private val bookingSystem: BookingSystem) {
     private var buildings = listOf<String>()
     private var computerTypes = listOf<String>()
 
@@ -45,6 +45,8 @@ class SearchRoomsPage(private val connection: String) {
                 Column {
                     var selectedBuilding by remember { mutableStateOf(buildings.first()) }
                     var selectedType by remember { mutableStateOf(computerTypes.first()) }
+
+                    Text("welcome ${bookingSystem.currentUser?.toString()}")
 
                     Row {
                         Row {
