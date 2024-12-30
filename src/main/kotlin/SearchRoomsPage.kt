@@ -153,7 +153,9 @@ class SearchRoomsPage(private val connection: String) {
                         }
                     }
 
-                    Button (onClick = {}) {
+                    Button (onClick = {
+                        navController.navigate("addRoom")
+                    }) {
                         Text("Add Room")
                     }
 
@@ -163,6 +165,9 @@ class SearchRoomsPage(private val connection: String) {
                         Text("Logout")
                     }
                 }
+            }
+            composable(route = "addRoom") {
+                AddRoomPage(connection).render()
             }
             composable(route = "login") {
                 LoginPage(connection).render()
