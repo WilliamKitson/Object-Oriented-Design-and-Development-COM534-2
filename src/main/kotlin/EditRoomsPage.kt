@@ -3,6 +3,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -40,6 +41,7 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
     @Composable
     fun render() {
         val navController = rememberNavController()
+        var isDialogOpen by remember { mutableStateOf(false) }
 
         NavHost(navController, startDestination = "editRooms") {
             composable("editRooms") {
@@ -60,7 +62,7 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                                 TableCell(text = it.number, weight = columnWeight)
                                 TableCell(text = it.building, weight = columnWeight)
                                 TableButton(text = it.compType, weight = columnWeight, onClick = {
-                                    println("edit ${it.compType}")
+                                    isDialogOpen = true
                                 })
                                 TableCell(text = it.computers.size.toString(), weight = columnWeight)
                             }
@@ -71,6 +73,26 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                     }) {
                         Text("Back")
                     }
+                }
+
+                if (isDialogOpen) {
+                    AlertDialog(
+                        onDismissRequest = { },
+                        confirmButton = {
+                            Button(onClick = {
+                                isDialogOpen = false
+                            }) {
+                                Text("Save")
+                            }
+                        },
+                        dismissButton = {
+                            Button(onClick = { isDialogOpen = false }) {
+                                Text("Back")
+                            }
+                        },
+                        title = { Text("Edit Computer Type") },
+                        text = { Text("Lore ipsum") },
+                    )
                 }
             }
             composable("adminPage") {
