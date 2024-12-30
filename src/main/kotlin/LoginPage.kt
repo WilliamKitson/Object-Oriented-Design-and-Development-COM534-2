@@ -5,53 +5,68 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import java.awt.Component
 
 class LoginPage(private val connection: String) {
     @Composable
     fun render() {
-        Column {
-            Text("Hello, welcome to my COM534 2 project!")
-            Text("Please sign up for an account or login below.")
-            Text("Remember, this project is linked to a database so registered accounts are persistent.")
+        val navController = rememberNavController()
 
-            var username by remember { mutableStateOf("") }
+        NavHost(navController, startDestination = "login") {
+            composable(route = "login") {
+                Column {
+                    Text("Hello, welcome to my COM534 2 project!")
+                    Text("Please sign up for an account or login below.")
+                    Text("Remember, this project is linked to a database so registered accounts are persistent.")
 
-            TextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") }
-            )
+                    var username by remember { mutableStateOf("") }
 
-            var password by remember { mutableStateOf("") }
+                    TextField(
+                        value = username,
+                        onValueChange = { username = it },
+                        label = { Text("Username") }
+                    )
 
-            TextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") }
-            )
+                    var password by remember { mutableStateOf("") }
 
-            var errors by remember { mutableStateOf("") }
+                    TextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        label = { Text("Password") }
+                    )
 
-            Row {
-                val bookingSystem = BookingSystem(connection)
+                    var errors by remember { mutableStateOf("") }
 
-                Button (onClick = {
-                    bookingSystem.login(username, password)
-                    errors = bookingSystem.getLastError()
-                }) {
-                    Text("Login")
-                }
+                    Row {
+                        val bookingSystem = BookingSystem(connection)
 
-                Button (onClick = {
-                    bookingSystem.signup(username, password)
-                    errors = bookingSystem.getLastError()
-                }) {
-                    Text("register")
+                        Button (onClick = {
+                            bookingSystem.login(username, password)
+                            errors = bookingSystem.getLastError()
+                            navController.navigate("searchRooms")
+
+                        }) {
+                            Text("Login")
+                        }
+
+                        Button (onClick = {
+                            bookingSystem.signup(username, password)
+                            errors = bookingSystem.getLastError()
+                            navController.navigate("searchRooms")
+                        }) {
+                            Text("register")
+                        }
+                    }
+
+                    Text(errors, color = Color.Red)
                 }
             }
-
-            Text(errors, color = Color.Red)
+            composable(route = "searchRooms") {
+                SearchRoomsPage(connection).render()
+            }
         }
     }
 }
