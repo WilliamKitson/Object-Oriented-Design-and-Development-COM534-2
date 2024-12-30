@@ -1,5 +1,6 @@
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -10,6 +11,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -116,11 +120,7 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                             }
                         }
 
-                        val number = mutableListOf<String>()
-                        val building = mutableListOf<String>()
-                        val computerType = mutableListOf<String>()
-                        val nComputers = mutableListOf<String>()
-                        val id = mutableListOf<String>()
+                        val rooms = mutableListOf<Room>()
 
                         transaction {
                             RoomsTable.selectAll().where {
@@ -128,31 +128,33 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                                     RoomsTable.computerType.eq(selectedType)
                                 }
                             }.forEach {
-                                number += it[RoomsTable.number].toString()
-                                building += it[RoomsTable.building]
-                                computerType += it[RoomsTable.computerType]
-                                nComputers += it[RoomsTable.nComputers].toString()
-                                id += it[RoomsTable.roomId].toString()
+                                rooms += Room(
+                                    it[RoomsTable.number].toString(),
+                                    it[RoomsTable.building],
+                                    it[RoomsTable.computerType],
+                                    it[RoomsTable.nComputers].toInt()
+                                )
                             }
                         }
 
-                        Row {
-                            LazyColumn {
-                                items(number) { curItem -> Text(curItem) }
+                        val columnWeight = .3f
+
+                        LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
+                            item {
+                                Row(Modifier.background(Color.Gray)) {
+                                    TableCell(text = "Room Number", weight = columnWeight)
+                                    TableCell(text = "Building", weight = columnWeight)
+                                    TableCell(text = "Computer OS", weight = columnWeight)
+                                    TableCell(text = "Number of Computers", weight = columnWeight)
+                                }
                             }
-                            LazyColumn {
-                                items(building) { curItem -> Text(curItem) }
-                            }
-                            LazyColumn {
-                                items(computerType) { curItem -> Text(curItem) }
-                            }
-                            LazyColumn {
-                                items(nComputers) { curItem -> Text(curItem) }
-                            }
-                            LazyColumn {
-                                items(nComputers) { curItem -> Button (onClick = { println(curItem) }) {
-                                    Text("View")
-                                } }
+                            items(rooms) {
+                                Row(Modifier.fillMaxWidth()) {
+                                    TableCell(text = it.number, weight = columnWeight)
+                                    TableCell(text = it.building, weight = columnWeight)
+                                    TableCell(text = it.compType, weight = columnWeight)
+                                    TableCell(text = it.computers.size.toString(), weight = columnWeight)
+                                }
                             }
                         }
                     }
@@ -191,5 +193,19 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
         }
 
         return true
+    }
+
+    @Composable
+    fun RowScope.TableCell(
+        text: String,
+        weight: Float
+    ) {
+        Text(
+            text = text,
+            Modifier
+                .border(1.dp, Color.Black)
+                .weight(weight)
+                .padding(8.dp)
+        )
     }
 }
