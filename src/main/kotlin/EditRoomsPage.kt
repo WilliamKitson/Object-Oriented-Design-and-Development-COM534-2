@@ -3,9 +3,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,7 +17,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class EditRoomsPage(private val connection: String, private val bookingSystem: BookingSystem) {
     private var rooms = listOf<Room>()
-    private var editedRoom = ""
+    private var computerTypes = listOf<String>()
+    private var editedRoom = Room("", "", "", 0)
 
     init {
         Database.connect(
@@ -36,7 +35,13 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                     it[RoomsTable.nComputers].toInt()
                 )
             }
+
+            RoomsTable.selectAll().forEach {
+                computerTypes += it[RoomsTable.computerType]
+            }
         }
+
+        computerTypes = computerTypes.distinct()
     }
 
     @Composable
@@ -63,7 +68,7 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                                 TableCell(text = it.number, weight = columnWeight)
                                 TableCell(text = it.building, weight = columnWeight)
                                 TableButton(text = it.compType, weight = columnWeight, onClick = {
-                                    editedRoom = it.toString()
+                                    editedRoom = it
                                     isDialogOpen = true
                                 })
                                 TableCell(text = it.computers.size.toString(), weight = columnWeight)
@@ -92,14 +97,41 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                                 Text("Back")
                             }
                         },
-                        title = { Text("Edit $editedRoom") },
+                        title = { Text("Edit ${editedRoom}") },
                         text = {
+                            var selectedType by remember { mutableStateOf(editedRoom.compType) }
+
+                            val isDropDownExpanded = remember {
+                                mutableStateOf(false)
+                            }
+
+                            val itemPosition = remember {
+                                mutableStateOf(0)
+                            }
+
                             Button(onClick = {
-                            isDialogOpen = false
-                        }) {
-                            Text("Save")
-                        }
-                               },
+                                isDropDownExpanded.value = true
+                            }){
+                                Text(text = computerTypes[itemPosition.value])
+                            }
+                            DropdownMenu(
+                                expanded = isDropDownExpanded.value,
+                                onDismissRequest = {
+                                    isDropDownExpanded.value = false
+                                }) {
+                                computerTypes.forEachIndexed { index, item ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            isDropDownExpanded.value = false
+                                            itemPosition.value = index
+                                            selectedType = item
+                                        }, content = {
+                                            Text(text = item)
+                                        }
+                                    )
+                                }
+                            }
+                        },
                     )
                 }
             }
