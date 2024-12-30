@@ -45,17 +45,7 @@ class SearchRoomsPage(private val connection: String, private val bookingSystem:
                 Column {
                     Text("welcome ${bookingSystem.currentUser?.toString()}")
 
-                    var render = true
-
-                    if (buildings.isEmpty()) {
-                        render = false
-                    }
-
-                    if (computerTypes.isEmpty()) {
-                        render = false
-                    }
-
-                    if (render) {
+                    if (renderTable()) {
                         var selectedBuilding by remember { mutableStateOf(buildings.first()) }
                         var selectedType by remember { mutableStateOf(computerTypes.first()) }
 
@@ -167,10 +157,12 @@ class SearchRoomsPage(private val connection: String, private val bookingSystem:
                         }
                     }
 
-                    Button (onClick = {
-                        navController.navigate("addRoom")
-                    }) {
-                        Text("Add Room")
+                    if (bookingSystem.currentUser?.isAdmin == true) {
+                        Button (onClick = {
+                            navController.navigate("addRoom")
+                        }) {
+                            Text("Add Room")
+                        }
                     }
 
                     Button (onClick = {
@@ -187,5 +179,17 @@ class SearchRoomsPage(private val connection: String, private val bookingSystem:
                 LoginPage(connection).render()
             }
         }
+    }
+
+    private fun renderTable(): Boolean {
+        if (buildings.isEmpty()) {
+            return false
+        }
+
+        if (computerTypes.isEmpty()) {
+            return false
+        }
+
+        return true
     }
 }
