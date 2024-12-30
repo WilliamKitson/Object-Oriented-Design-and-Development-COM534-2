@@ -59,7 +59,9 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                             Row(Modifier.fillMaxWidth()) {
                                 TableCell(text = it.number, weight = columnWeight)
                                 TableCell(text = it.building, weight = columnWeight)
-                                TableCell(text = it.compType, weight = columnWeight)
+                                TableButton(text = it.compType, weight = columnWeight, onClick = {
+                                    println("edit ${it.compType}")
+                                })
                                 TableCell(text = it.computers.size.toString(), weight = columnWeight)
                             }
                         }
@@ -89,5 +91,23 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                 .weight(weight)
                 .padding(8.dp)
         )
+    }
+
+    @Composable
+    fun RowScope.TableButton(
+        text: String,
+        weight: Float,
+        onClick: () -> Unit
+    ) {
+        Button(
+            modifier = Modifier
+                .border(1.dp, Color.Black)
+                .weight(weight)
+                .padding(8.dp),
+            onClick = {
+                onClick()
+        }) {
+            Text(text)
+        }
     }
 }
