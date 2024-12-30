@@ -47,7 +47,13 @@ class LoginPage(private val connection: String) {
                             errors = bookingSystem.getLastError()
 
                             if (bookingSystem.currentUser != null) {
-                                navController.navigate("searchRooms")
+                                if (bookingSystem.currentUser?.isAdmin == true) {
+                                    navController.navigate("adminPage")
+                                }
+
+                                if (bookingSystem.currentUser?.isAdmin == false) {
+                                    navController.navigate("searchRooms")
+                                }
                             }
                         }) {
                             Text("Login")
@@ -79,6 +85,10 @@ class LoginPage(private val connection: String) {
             }
             composable(route = "searchRooms") {
                 SearchRoomsPage(connection, bookingSystem).render()
+            }
+
+            composable(route = "adminPage") {
+                AdminPage(connection, bookingSystem).render()
             }
         }
     }
