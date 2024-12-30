@@ -46,7 +46,7 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                 Column {
                     val columnWeight = .3f
 
-                    LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
+                    LazyColumn(Modifier.fillMaxWidth().padding(16.dp)) {
                         item {
                             Row(Modifier.background(Color.Gray)) {
                                 TableCell(text = "Room Number", weight = columnWeight)
