@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.exposed.sql.and
 
-class SearchRoomsPage(private val connection: String, private val bookingSystem: BookingSystem) {
+class StudentPage(private val connection: String, private val bookingSystem: BookingSystem) {
     private var buildings = listOf<String>()
     private var computerTypes = listOf<String>()
 

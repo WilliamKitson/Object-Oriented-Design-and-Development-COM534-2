@@ -62,7 +62,7 @@ class AddRoomPage(private val connection: String, private val bookingSystem: Boo
                 }
             }
             composable("searchRooms") {
-                SearchRoomsPage(connection, bookingSystem).render()
+                StudentPage(connection, bookingSystem).render()
             }
         }
     }

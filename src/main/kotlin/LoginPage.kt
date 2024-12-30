@@ -52,7 +52,7 @@ class LoginPage(private val connection: String) {
                                 }
 
                                 if (bookingSystem.currentUser?.isAdmin == false) {
-                                    navController.navigate("searchRooms")
+                                    navController.navigate("studentPage")
                                 }
                             }
                         }) {
@@ -83,8 +83,8 @@ class LoginPage(private val connection: String) {
                     Text(errors, color = Color.Red)
                 }
             }
-            composable(route = "searchRooms") {
-                SearchRoomsPage(connection, bookingSystem).render()
+            composable(route = "studentPage") {
+                StudentPage(connection, bookingSystem).render()
             }
 
             composable(route = "adminPage") {
