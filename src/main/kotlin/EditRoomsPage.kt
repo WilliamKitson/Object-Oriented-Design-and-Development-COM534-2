@@ -97,6 +97,8 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                                         it[RoomsTable.computerType] = selectedType
                                     }
                                 }
+
+                                navController.navigate("adminPage")
                             }) {
                                 Text("Save")
                             }
