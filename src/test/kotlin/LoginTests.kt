@@ -8,13 +8,19 @@ class LoginTests {
     private val connection = "jdbc:sqlite:4kitsw10_COM534_2_database_test.db"
 
     @Test
-    fun testLoginUsernameError() {
+    fun testLoginSuccessful() {
         clearAccounts()
 
-        val bookingSystem = BookingSystem(connection)
+        val user = User(
+            "student",
+            "20CharactersOrMore20"
+        )
 
-        bookingSystem.login("student", "password")
-        assert(bookingSystem.getLastError() == "Error: username unregisted.")
+        val bookingSystem = BookingSystem(connection)
+        bookingSystem.signupStudent(user.username, user.password)
+
+        bookingSystem.login(user.username, user.password)
+        assert(bookingSystem.getLastError() == "")
     }
 
     private fun clearAccounts() {
@@ -28,5 +34,15 @@ class LoginTests {
             SchemaUtils.create(RoomsTable)
             AccountsTable.deleteAll()
         }
+    }
+
+    @Test
+    fun testLoginUsernameError() {
+        clearAccounts()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.login("student", "password")
+        assert(bookingSystem.getLastError() == "Error: username unregisted.")
     }
 }
