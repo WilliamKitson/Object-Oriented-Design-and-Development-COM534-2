@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class EditRoomsPage(private val connection: String, private val bookingSystem: BookingSystem) {
     private var rooms = listOf<Room>()
@@ -83,11 +84,19 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                 }
 
                 if (isDialogOpen) {
+                    var selectedType by remember { mutableStateOf(editedRoom.compType) }
+
                     AlertDialog(
                         onDismissRequest = { },
                         confirmButton = {
                             Button(onClick = {
                                 isDialogOpen = false
+
+                                transaction {
+                                    RoomsTable.update({ RoomsTable.building eq editedRoom.building }) {
+                                        it[RoomsTable.computerType] = selectedType
+                                    }
+                                }
                             }) {
                                 Text("Save")
                             }
@@ -97,10 +106,8 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                                 Text("Back")
                             }
                         },
-                        title = { Text("Edit ${editedRoom}") },
+                        title = { Text("Edit $editedRoom") },
                         text = {
-                            var selectedType by remember { mutableStateOf(editedRoom.compType) }
-
                             val isDropDownExpanded = remember {
                                 mutableStateOf(false)
                             }
