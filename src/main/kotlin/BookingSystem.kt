@@ -19,6 +19,8 @@ class BookingSystem(private val connection: String) {
         )
 
         transaction {
+            SchemaUtils.create(AccountsTable)
+
             AccountsTable.selectAll().forEach {
                 val user = User(
                     it[AccountsTable.username],
@@ -28,6 +30,8 @@ class BookingSystem(private val connection: String) {
 
                 addUser(user)
             }
+
+            SchemaUtils.create(RoomsTable)
 
             RoomsTable.selectAll().forEach {
                 val room = Room(

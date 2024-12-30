@@ -43,115 +43,127 @@ class SearchRoomsPage(private val connection: String, private val bookingSystem:
         NavHost(navController, startDestination = "searchRooms") {
             composable(route = "searchRooms") {
                 Column {
-                    var selectedBuilding by remember { mutableStateOf(buildings.first()) }
-                    var selectedType by remember { mutableStateOf(computerTypes.first()) }
-
                     Text("welcome ${bookingSystem.currentUser?.toString()}")
 
-                    Row {
+                    var render = true
+
+                    if (buildings.isEmpty()) {
+                        render = false
+                    }
+
+                    if (computerTypes.isEmpty()) {
+                        render = false
+                    }
+
+                    if (render) {
+                        var selectedBuilding by remember { mutableStateOf(buildings.first()) }
+                        var selectedType by remember { mutableStateOf(computerTypes.first()) }
+
                         Row {
-                            val isDropDownExpanded = remember {
-                                mutableStateOf(false)
-                            }
+                            Row {
+                                val isDropDownExpanded = remember {
+                                    mutableStateOf(false)
+                                }
 
-                            val itemPosition = remember {
-                                mutableStateOf(0)
-                            }
+                                val itemPosition = remember {
+                                    mutableStateOf(0)
+                                }
 
-                            Button(onClick = {
-                                isDropDownExpanded.value = true
-                            }){
-                                Text(text = buildings[itemPosition.value])
+                                Button(onClick = {
+                                    isDropDownExpanded.value = true
+                                }){
+                                    Text(text = buildings[itemPosition.value])
+                                }
+                                DropdownMenu(
+                                    expanded = isDropDownExpanded.value,
+                                    onDismissRequest = {
+                                        isDropDownExpanded.value = false
+                                    }) {
+                                    buildings.forEachIndexed { index, item ->
+                                        DropdownMenuItem(
+                                            onClick = {
+                                                isDropDownExpanded.value = false
+                                                itemPosition.value = index
+                                                selectedBuilding = item
+                                            }, content = {
+                                                Text(text = item)
+                                            }
+                                        )
+                                    }
+                                }
                             }
-                            DropdownMenu(
-                                expanded = isDropDownExpanded.value,
-                                onDismissRequest = {
-                                    isDropDownExpanded.value = false
-                                }) {
-                                buildings.forEachIndexed { index, item ->
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            isDropDownExpanded.value = false
-                                            itemPosition.value = index
-                                            selectedBuilding = item
-                                        }, content = {
-                                            Text(text = item)
-                                        }
-                                    )
+                            Row {
+                                val isDropDownExpanded = remember {
+                                    mutableStateOf(false)
+                                }
+
+                                val itemPosition = remember {
+                                    mutableStateOf(0)
+                                }
+
+                                Button(onClick = {
+                                    isDropDownExpanded.value = true
+                                }){
+                                    Text(text = computerTypes[itemPosition.value])
+                                }
+                                DropdownMenu(
+                                    expanded = isDropDownExpanded.value,
+                                    onDismissRequest = {
+                                        isDropDownExpanded.value = false
+                                    }) {
+                                    computerTypes.forEachIndexed { index, item ->
+                                        DropdownMenuItem(
+                                            onClick = {
+                                                isDropDownExpanded.value = false
+                                                itemPosition.value = index
+                                                selectedType = item
+                                            }, content = {
+                                                Text(text = item)
+                                            }
+                                        )
+                                    }
                                 }
                             }
                         }
-                        Row {
-                            val isDropDownExpanded = remember {
-                                mutableStateOf(false)
-                            }
 
-                            val itemPosition = remember {
-                                mutableStateOf(0)
-                            }
+                        val number = mutableListOf<String>()
+                        val building = mutableListOf<String>()
+                        val computerType = mutableListOf<String>()
+                        val nComputers = mutableListOf<String>()
+                        val id = mutableListOf<String>()
 
-                            Button(onClick = {
-                                isDropDownExpanded.value = true
-                            }){
-                                Text(text = computerTypes[itemPosition.value])
-                            }
-                            DropdownMenu(
-                                expanded = isDropDownExpanded.value,
-                                onDismissRequest = {
-                                    isDropDownExpanded.value = false
-                                }) {
-                                computerTypes.forEachIndexed { index, item ->
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            isDropDownExpanded.value = false
-                                            itemPosition.value = index
-                                            selectedType = item
-                                        }, content = {
-                                            Text(text = item)
-                                        }
-                                    )
+                        transaction {
+                            RoomsTable.selectAll().where {
+                                RoomsTable.building.eq(selectedBuilding).and {
+                                    RoomsTable.computerType.eq(selectedType)
                                 }
+                            }.forEach {
+                                number += it[RoomsTable.number].toString()
+                                building += it[RoomsTable.building]
+                                computerType += it[RoomsTable.computerType]
+                                nComputers += it[RoomsTable.nComputers].toString()
+                                id += it[RoomsTable.roomId].toString()
                             }
                         }
-                    }
 
-                    val number = mutableListOf<String>()
-                    val building = mutableListOf<String>()
-                    val computerType = mutableListOf<String>()
-                    val nComputers = mutableListOf<String>()
-                    val id = mutableListOf<String>()
-
-                    transaction {
-                        RoomsTable.selectAll().where {
-                            RoomsTable.building.eq(selectedBuilding).and {
-                                RoomsTable.computerType.eq(selectedType)
+                        Row {
+                            LazyColumn {
+                                items(number) { curItem -> Text(curItem) }
                             }
-                        }.forEach {
-                            number += it[RoomsTable.number].toString()
-                            building += it[RoomsTable.building]
-                            computerType += it[RoomsTable.computerType]
-                            nComputers += it[RoomsTable.nComputers].toString()
-                            id += it[RoomsTable.roomId].toString()
-                        }
-                    }
-
-                    Row {
-                        LazyColumn {
-                            items(number) { curItem -> Text(curItem) }
-                        }
-                        LazyColumn {
-                            items(building) { curItem -> Text(curItem) }
-                        }
-                        LazyColumn {
-                            items(computerType) { curItem -> Text(curItem) }
-                        }
-                        LazyColumn {
-                            items(nComputers) { curItem -> Text(curItem) }
-                        }
-                        LazyColumn {
-                            items(nComputers) { curItem -> Button (onClick = { println(curItem) }) {
-                                Text("View")
-                            } }
+                            LazyColumn {
+                                items(building) { curItem -> Text(curItem) }
+                            }
+                            LazyColumn {
+                                items(computerType) { curItem -> Text(curItem) }
+                            }
+                            LazyColumn {
+                                items(nComputers) { curItem -> Text(curItem) }
+                            }
+                            LazyColumn {
+                                items(nComputers) { curItem -> Button (onClick = { println(curItem) }) {
+                                    Text("View")
+                                } }
+                            }
                         }
                     }
 
