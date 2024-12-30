@@ -139,7 +139,7 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
 
                         val columnWeight = .3f
 
-                        LazyColumn(Modifier.fillMaxSize().padding(16.dp)) {
+                        LazyColumn(Modifier.fillMaxWidth().padding(16.dp)) {
                             item {
                                 Row(Modifier.background(Color.Gray)) {
                                     TableCell(text = "Room Number", weight = columnWeight)
@@ -156,14 +156,6 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                                     TableCell(text = it.computers.size.toString(), weight = columnWeight)
                                 }
                             }
-                        }
-                    }
-
-                    if (bookingSystem.currentUser?.isAdmin == true) {
-                        Button (onClick = {
-                            navController.navigate("addRoom")
-                        }) {
-                            Text("Add Room")
                         }
                     }
 
