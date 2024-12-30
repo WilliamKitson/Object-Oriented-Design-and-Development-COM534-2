@@ -105,8 +105,14 @@ class BookingSystem(private val connection: String) {
     }
 
     fun login(username: String, password: String) : User? {
-        // singleOrNull() is a filter function which will either return a single instance of an object
-        // which meets the criterion specified in the lambda, or null if no objects meet this criterion.
+        lastError = LastError.UsernameUnregistered
+
+        for (user in users) {
+            if (user.username == username) {
+                lastError = LastError.NoError
+            }
+        }
+
         currentUser = users.singleOrNull { it.username == username  && it.password == password }
         return currentUser
     }
