@@ -171,7 +171,7 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                 }
             }
             composable(route = "bookComputer") {
-
+                BookComputerPage(connection, bookingSystem).render()
             }
             composable(route = "login") {
                 LoginPage(connection).render()
