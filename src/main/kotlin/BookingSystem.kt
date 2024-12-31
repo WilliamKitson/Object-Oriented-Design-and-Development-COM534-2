@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.awt.print.Book
 
 class BookingSystem(private val connection: String) {
     val users = mutableListOf<User>()
@@ -42,6 +43,23 @@ class BookingSystem(private val connection: String) {
                 )
 
                 rooms.add(room)
+            }
+
+            SchemaUtils.create(BookingsTable)
+
+            BookingsTable.selectAll().forEach {
+                login(
+                    it[BookingsTable.username],
+                    it[BookingsTable.password],
+                )
+
+                bookRoomSuccessful(
+                    it[BookingsTable.number],
+                    it[BookingsTable.day],
+                    it[BookingsTable.time],
+                )
+
+                logout()
             }
         }
     }
@@ -208,11 +226,28 @@ class BookingSystem(private val connection: String) {
     }
 
     fun bookRoom(number: String, day: String, time: Int) : Boolean {
+        if (bookRoomSuccessful(number, day, time)) {
+            transaction {
+                SchemaUtils.create(BookingsTable)
+
+                BookingsTable.insert {
+                    it[BookingsTable.username] = currentUser?.username.toString()
+                    it[BookingsTable.password] = currentUser?.password.toString()
+                    it[BookingsTable.number] = number
+                    it[BookingsTable.day] = day
+                    it[BookingsTable.time] = time
+                }[BookingsTable.bookingId]
+            }
+
+            return true
+        }
+
+        return false
+    }
+
+    private fun bookRoomSuccessful(number: String, day: String, time: Int): Boolean {
         val room = findRoomByNumber(number)
         if(room != null && currentUser != null) {
-            // !! indicates that we know currentUser will not be null in our case
-            // We have to do this as in multithreaded applications, another thread (process) might update
-            // currentUser to null after this "if" statement has been executed
             return room.bookComputer(day, time, currentUser!!) != null
         }
         return false
