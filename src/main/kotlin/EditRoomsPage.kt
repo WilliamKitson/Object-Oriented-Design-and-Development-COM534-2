@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -93,7 +94,11 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
                                 isDialogOpen = false
 
                                 transaction {
-                                    RoomsTable.update({ RoomsTable.building eq editedRoom.building }) {
+                                    RoomsTable.update({
+                                        (RoomsTable.number eq editedRoom.number.toInt()).and {
+                                            RoomsTable.building eq editedRoom.building
+                                        }
+                                    }) {
                                         it[RoomsTable.computerType] = selectedType
                                     }
                                 }
