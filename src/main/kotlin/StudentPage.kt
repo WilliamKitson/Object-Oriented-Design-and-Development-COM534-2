@@ -146,6 +146,7 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                                     TableCell(text = "Building", weight = columnWeight)
                                     TableCell(text = "Computer OS", weight = columnWeight)
                                     TableCell(text = "Number of Computers", weight = columnWeight)
+                                    TableCell(text = "Book Computer", weight = columnWeight)
                                 }
                             }
                             items(rooms) {
@@ -154,6 +155,9 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                                     TableCell(text = it.building, weight = columnWeight)
                                     TableCell(text = it.compType, weight = columnWeight)
                                     TableCell(text = it.computers.size.toString(), weight = columnWeight)
+                                    TableButton(text = "Book", weight = columnWeight, onClick = {
+                                        navController.navigate("bookComputer")
+                                    })
                                 }
                             }
                         }
@@ -166,8 +170,8 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                     }
                 }
             }
-            composable(route = "addRoom") {
-                AddRoomPage(connection, bookingSystem).render()
+            composable(route = "bookComputer") {
+
             }
             composable(route = "login") {
                 LoginPage(connection).render()
@@ -199,5 +203,23 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                 .weight(weight)
                 .padding(8.dp)
         )
+    }
+
+    @Composable
+    fun RowScope.TableButton(
+        text: String,
+        weight: Float,
+        onClick: () -> Unit
+    ) {
+        Button(
+            modifier = Modifier
+                .border(1.dp, Color.Black)
+                .weight(weight)
+                .padding(8.dp),
+            onClick = {
+                onClick()
+            }) {
+            Text(text)
+        }
     }
 }
