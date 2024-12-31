@@ -173,7 +173,7 @@ class BookingSystem(private val connection: String) {
             SchemaUtils.create(RoomsTable)
 
             RoomsTable.insert {
-                it[RoomsTable.number] = room.number.toInt()
+                it[RoomsTable.number] = room.number
                 it[RoomsTable.building] = room.building
                 it[RoomsTable.computerType] = room.compType
                 it[RoomsTable.nComputers] = room.computers.size

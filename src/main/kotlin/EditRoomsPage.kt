@@ -95,7 +95,7 @@ class EditRoomsPage(private val connection: String, private val bookingSystem: B
 
                                 transaction {
                                     RoomsTable.update({
-                                        (RoomsTable.number eq editedRoom.number.toInt()).and {
+                                        (RoomsTable.number eq editedRoom.number).and {
                                             RoomsTable.building eq editedRoom.building
                                         }
                                     }) {

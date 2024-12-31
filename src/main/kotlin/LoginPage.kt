@@ -64,7 +64,7 @@ class LoginPage(private val connection: String) {
                             errors = bookingSystem.getLastError()
 
                             bookingSystem.login(username, password)
-                            navController.navigate("searchRooms")
+                            navController.navigate("studentPage")
                         }) {
                             Text("register student")
                         }
@@ -74,7 +74,7 @@ class LoginPage(private val connection: String) {
                             errors = bookingSystem.getLastError()
 
                             bookingSystem.login(username, password)
-                            navController.navigate("searchRooms")
+                            navController.navigate("adminPage")
                         }) {
                             Text("register admin")
                         }
