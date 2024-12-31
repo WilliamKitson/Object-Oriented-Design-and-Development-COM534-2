@@ -154,6 +154,12 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                                     TableCell(text = it.compType, weight = columnWeight)
                                     TableCell(text = it.computers.size.toString(), weight = columnWeight)
                                     TableButton(text = "Book", weight = columnWeight, onClick = {
+                                        bookingSystem.bookRoom(
+                                            it.number,
+                                            "Monday",
+                                            9
+                                        )
+
                                         navController.navigate("studentPage")
                                     })
                                 }
