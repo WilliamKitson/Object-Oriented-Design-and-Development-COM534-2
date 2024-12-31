@@ -93,4 +93,28 @@ class AddRoomTest {
 
         assert(bookingSystem.getLastError() == "Error: room already exists.")
     }
+
+    @Test
+    fun testDuplicatedResetError() {
+        clearRooms()
+        val bookingSystem = BookingSystem(connection)
+        val input = Room(
+            "0",
+            "building",
+            "0",
+            0
+        )
+
+        bookingSystem.addRoom(input)
+        bookingSystem.addRoom(input)
+
+        bookingSystem.addRoom(Room(
+            "1",
+            "building",
+            "0",
+            0
+        ))
+
+        assert(bookingSystem.getLastError() == "")
+    }
 }
