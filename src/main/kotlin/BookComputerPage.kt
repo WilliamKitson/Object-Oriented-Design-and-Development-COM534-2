@@ -1,3 +1,4 @@
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -12,10 +13,12 @@ class BookComputerPage(private val connection: String, private val bookingSystem
 
         NavHost(navController, startDestination = "bookComputer") {
             composable(route = "bookComputer") {
-                Button(onClick = {
-                    navController.navigate("studentPage")
-                }) {
-                    Text("Back")
+                Column {
+                    Button(onClick = {
+                        navController.navigate("studentPage")
+                    }) {
+                        Text("Back")
+                    }
                 }
             }
             composable(route = "studentPage") {
