@@ -138,6 +138,7 @@ class BookingSystem(private val connection: String) {
         for (i in rooms) {
             if (i.number == room.number) {
                 if (i.building == room.building) {
+                    lastError = LastError.RoomAlreadyExists
                     return
                 }
             }
