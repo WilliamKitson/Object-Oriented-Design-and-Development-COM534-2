@@ -140,6 +140,8 @@ class BookingSystem(private val connection: String) {
             return
         }
 
+        lastError = LastError.NoError
+
         for (i in rooms) {
             if (i.number == room.number) {
                 if (i.building == room.building) {

@@ -3,6 +3,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,6 +17,7 @@ class AddRoomPage(private val connection: String, private val bookingSystem: Boo
             composable("addRoom") {
                 Column {
                     var number by remember { mutableStateOf("") }
+                    var errors by remember { mutableStateOf("") }
 
                     TextField(
                         value = number,
@@ -55,7 +57,11 @@ class AddRoomPage(private val connection: String, private val bookingSystem: Boo
                             nComputers.toInt(),
                         ))
 
-                        navController.navigate("adminPage")
+                        errors = bookingSystem.getLastError()
+
+                        if (errors == "") {
+                            navController.navigate("adminPage")
+                        }
                     }) {
                         Text("Save Room")
                     }
@@ -65,6 +71,8 @@ class AddRoomPage(private val connection: String, private val bookingSystem: Boo
                     }) {
                         Text("Back")
                     }
+
+                    Text(errors, color = Color.Red)
                 }
             }
             composable("adminPage") {
