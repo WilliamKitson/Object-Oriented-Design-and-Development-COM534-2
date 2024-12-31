@@ -55,4 +55,22 @@ class AddRoomTest {
             assert(BookingSystem(connection).rooms[i].toString() == input.toString())
         }
     }
+
+    @Test
+    fun testDuplicatedRoom() {
+        clearRooms()
+
+        for (i in 0..5) {
+            val input = Room(
+                "0",
+                "building",
+                i.toString(),
+                i * 5
+            )
+
+            BookingSystem(connection).addRoom(input)
+        }
+
+        assert(BookingSystem(connection).rooms.size == 1)
+    }
 }

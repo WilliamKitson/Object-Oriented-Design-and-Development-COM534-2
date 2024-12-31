@@ -135,6 +135,14 @@ class BookingSystem(private val connection: String) {
     }
 
     fun addRoom(room: Room) {
+        for (i in rooms) {
+            if (i.number == room.number) {
+                if (i.building == room.building) {
+                    return
+                }
+            }
+        }
+
         transaction {
             SchemaUtils.create(RoomsTable)
 
