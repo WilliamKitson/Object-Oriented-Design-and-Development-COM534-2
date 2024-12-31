@@ -135,6 +135,11 @@ class BookingSystem(private val connection: String) {
     }
 
     fun addRoom(room: Room) {
+        if (roomExists(room)) {
+            lastError = LastError.RoomAlreadyExists
+            return
+        }
+
         for (i in rooms) {
             if (i.number == room.number) {
                 if (i.building == room.building) {
@@ -156,6 +161,18 @@ class BookingSystem(private val connection: String) {
         }
 
         rooms.add(room)
+    }
+
+    private fun roomExists(room: Room): Boolean {
+        for (i in rooms) {
+            if (i.number == room.number) {
+                if (i.building == room.building) {
+                    return true
+                }
+            }
+        }
+
+        return false
     }
 
     fun findRoomByNumber(number: String) : Room? {
