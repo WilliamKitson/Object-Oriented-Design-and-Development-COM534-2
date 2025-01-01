@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -36,7 +37,8 @@ class LoginPage(private val connection: String) {
                     TextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = { Text("Password") }
+                        label = { Text("Password") },
+                        visualTransformation = PasswordVisualTransformation()
                     )
 
                     var errors by remember { mutableStateOf("") }
