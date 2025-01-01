@@ -264,6 +264,16 @@ class BookingSystem(private val connection: String) {
         return uniqueBuildings.distinct()
     }
 
+    fun getUniqueRoomComputerTypes(): List<String> {
+        val uniqueComputerTypes = mutableListOf<String>()
+
+        for (i in rooms) {
+            uniqueComputerTypes += i.compType
+        }
+
+        return uniqueComputerTypes.distinct()
+    }
+
     fun cancel(booking: Booking) {
         println(booking)
     }
