@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -31,7 +29,6 @@ class ViewBookingsPage(private val connection: String, private val bookingSystem
         NavHost(navController, startDestination = "viewBookings") {
             composable(route = "viewBookings") {
                 Column {
-
                     val columnWeight = .3f
 
                     LazyColumn(Modifier.fillMaxWidth().padding(16.dp)) {
@@ -45,7 +42,8 @@ class ViewBookingsPage(private val connection: String, private val bookingSystem
                             Row(Modifier.fillMaxWidth()) {
                                 TableCell(text = it.toString(), weight = columnWeight)
                                 TableButton(text = "Cancel", weight = columnWeight, onClick = {
-                                    println(it.toString())
+                                    bookingSystem.cancel(it)
+                                    navController.navigate(route = "studentPage")
                                 })
                             }
                         }
@@ -57,9 +55,9 @@ class ViewBookingsPage(private val connection: String, private val bookingSystem
                         Text("Back")
                     }
                 }
-                composable(route = "studentPage") {
-                    StudentPage(connection, bookingSystem).render()
-                }
+            }
+            composable(route = "studentPage") {
+                StudentPage(connection, bookingSystem).render()
             }
         }
     }

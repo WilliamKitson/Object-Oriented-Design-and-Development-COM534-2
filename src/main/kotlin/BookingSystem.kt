@@ -245,6 +245,10 @@ class BookingSystem(private val connection: String) {
         return false
     }
 
+    fun cancel(booking: Booking) {
+        println(booking)
+    }
+
     private fun bookRoomSuccessful(number: String, day: String, time: Int): Boolean {
         val room = findRoomByNumber(number)
         if(room != null && currentUser != null) {
