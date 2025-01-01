@@ -3,25 +3,25 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class BookComputerPage(private val connection: String, private val bookingSystem: BookingSystem) {
     private var buildings = listOf<String>()
     private var computerTypes = listOf<String>()
+    private var currentRoom: Room? = null
 
     init {
         Database.connect(
@@ -43,6 +43,7 @@ class BookComputerPage(private val connection: String, private val bookingSystem
     @Composable
     fun render() {
         val navController = rememberNavController()
+        var isDialogOpen by remember { mutableStateOf(false) }
 
         NavHost(navController, startDestination = "bookComputer") {
             composable(route = "bookComputer") {
@@ -154,24 +155,49 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                                     TableCell(text = it.compType, weight = columnWeight)
                                     TableCell(text = it.computers.size.toString(), weight = columnWeight)
                                     TableButton(text = "Book", weight = columnWeight, onClick = {
-                                        bookingSystem.bookRoom(
-                                            it.number,
-                                            "Monday",
-                                            9
-                                        )
-
-                                        navController.navigate("studentPage")
+                                        isDialogOpen = true
+                                        currentRoom = it
                                     })
                                 }
                             }
                         }
                     }
-
                     Button(onClick = {
                         navController.navigate("studentPage")
                     }) {
                         Text("Back")
                     }
+                }
+                if (isDialogOpen) {
+                    AlertDialog(
+                        onDismissRequest = { },
+                        confirmButton = {
+                            Button(onClick = {
+                                isDialogOpen = false
+
+                                bookingSystem.bookRoom(
+                                    currentRoom?.number.toString(),
+                                    "Monday",
+                                    9
+                                )
+
+                                navController.navigate("studentPage")
+                            }) {
+                                Text("Book")
+                            }
+                        },
+                        dismissButton = {
+                            Button(onClick = {
+                                isDialogOpen = false
+                            }) {
+                                Text("Back")
+                            }
+                        },
+                        title = { Text("Book $currentRoom") },
+                        text = {
+                            Text("TEMP")
+                        },
+                    )
                 }
             }
             composable(route = "studentPage") {
