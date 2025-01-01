@@ -172,6 +172,9 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                     val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
                     var selectedDay by remember { mutableStateOf(days.first()) }
 
+                    val timeslots = listOf(9, 11, 13, 15)
+                    var selectedTimeslot by remember { mutableStateOf(timeslots.first()) }
+
                     AlertDialog(
                         onDismissRequest = { },
                         confirmButton = {
@@ -181,7 +184,7 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                                 bookingSystem.bookRoom(
                                     currentRoom?.number.toString(),
                                     selectedDay,
-                                    9
+                                    selectedTimeslot
                                 )
 
                                 navController.navigate("studentPage")
@@ -199,36 +202,72 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                         title = { Text("Book $currentRoom") },
                         text = {
                             Column {
-                                Text("TEMP")
+                                Text("Please select a day and time to book this room.")
 
-                                val isDropDownExpanded = remember {
-                                    mutableStateOf(false)
-                                }
+                                Row {
+                                    Row {
+                                        val isDropDownExpanded = remember {
+                                            mutableStateOf(false)
+                                        }
 
-                                val itemPosition = remember {
-                                    mutableStateOf(0)
-                                }
+                                        val itemPosition = remember {
+                                            mutableStateOf(0)
+                                        }
 
-                                Button(onClick = {
-                                    isDropDownExpanded.value = true
-                                }){
-                                    Text(text = days[itemPosition.value])
-                                }
-                                DropdownMenu(
-                                    expanded = isDropDownExpanded.value,
-                                    onDismissRequest = {
-                                        isDropDownExpanded.value = false
-                                    }) {
-                                    days.forEachIndexed { index, item ->
-                                        DropdownMenuItem(
-                                            onClick = {
+                                        Button(onClick = {
+                                            isDropDownExpanded.value = true
+                                        }) {
+                                            Text(text = days[itemPosition.value])
+                                        }
+                                        DropdownMenu(
+                                            expanded = isDropDownExpanded.value,
+                                            onDismissRequest = {
                                                 isDropDownExpanded.value = false
-                                                itemPosition.value = index
-                                                selectedDay = item
-                                            }, content = {
-                                                Text(text = item)
+                                            }) {
+                                            days.forEachIndexed { index, item ->
+                                                DropdownMenuItem(
+                                                    onClick = {
+                                                        isDropDownExpanded.value = false
+                                                        itemPosition.value = index
+                                                        selectedDay = item
+                                                    }, content = {
+                                                        Text(text = item)
+                                                    }
+                                                )
                                             }
-                                        )
+                                        }
+                                    }
+                                    Row {
+                                        val isDropDownExpanded = remember {
+                                            mutableStateOf(false)
+                                        }
+
+                                        val itemPosition = remember {
+                                            mutableStateOf(0)
+                                        }
+
+                                        Button(onClick = {
+                                            isDropDownExpanded.value = true
+                                        }) {
+                                            Text(text = timeslots[itemPosition.value].toString())
+                                        }
+                                        DropdownMenu(
+                                            expanded = isDropDownExpanded.value,
+                                            onDismissRequest = {
+                                                isDropDownExpanded.value = false
+                                            }) {
+                                            timeslots.forEachIndexed { index, item ->
+                                                DropdownMenuItem(
+                                                    onClick = {
+                                                        isDropDownExpanded.value = false
+                                                        itemPosition.value = index
+                                                        selectedTimeslot = item
+                                                    }, content = {
+                                                        Text(text = item.toString())
+                                                    }
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
