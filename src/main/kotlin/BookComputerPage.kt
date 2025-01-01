@@ -169,6 +169,9 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                     }
                 }
                 if (isDialogOpen) {
+                    val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+                    var selectedDay by remember { mutableStateOf(days.first()) }
+
                     AlertDialog(
                         onDismissRequest = { },
                         confirmButton = {
@@ -196,6 +199,37 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                         title = { Text("Book $currentRoom") },
                         text = {
                             Text("TEMP")
+
+                            val isDropDownExpanded = remember {
+                                mutableStateOf(false)
+                            }
+
+                            val itemPosition = remember {
+                                mutableStateOf(0)
+                            }
+
+                            Button(onClick = {
+                                isDropDownExpanded.value = true
+                            }){
+                                Text(text = days[itemPosition.value])
+                            }
+                            DropdownMenu(
+                                expanded = isDropDownExpanded.value,
+                                onDismissRequest = {
+                                    isDropDownExpanded.value = false
+                                }) {
+                                days.forEachIndexed { index, item ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            isDropDownExpanded.value = false
+                                            itemPosition.value = index
+                                            selectedDay = item
+                                        }, content = {
+                                            Text(text = item)
+                                        }
+                                    )
+                                }
+                            }
                         },
                     )
                 }
