@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -21,9 +23,47 @@ class RoomDayBookings(private val connection: String, private val bookingSystem:
         NavHost(navController, startDestination = "roomDayBookings") {
             composable(route = "roomDayBookings") {
                 Column {
+                    val rooms = bookingSystem.getUniqueRoomNumbers()
+                    var selectedRoom by remember { mutableStateOf(rooms.first()) }
+
+                    Row {
+                        Row {
+                            val isDropDownExpanded = remember {
+                                mutableStateOf(false)
+                            }
+
+                            val itemPosition = remember {
+                                mutableStateOf(0)
+                            }
+
+                            Button(onClick = {
+                                isDropDownExpanded.value = true
+                            }) {
+                                Text(text = rooms[itemPosition.value])
+                            }
+                            DropdownMenu(
+                                expanded = isDropDownExpanded.value,
+                                onDismissRequest = {
+                                    isDropDownExpanded.value = false
+                                }) {
+                                rooms.forEachIndexed { index, item ->
+                                    DropdownMenuItem(
+                                        onClick = {
+                                            isDropDownExpanded.value = false
+                                            itemPosition.value = index
+                                            selectedRoom = item
+                                        }, content = {
+                                            Text(text = item)
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
                     val bookings = mutableListOf<Booking>()
 
-                    for (i in bookingSystem.getAllBookingsForRoomAndDay("JS001", "Monday")!!) {
+                    for (i in bookingSystem.getAllBookingsForRoomAndDay(selectedRoom, "Monday")!!) {
                         bookings += i
                     }
 
