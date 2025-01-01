@@ -23,6 +23,12 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
                     }
 
                     Button (onClick = {
+                        navController.navigate(route = "viewBookings")
+                    }) {
+                        Text("View Bookings")
+                    }
+
+                    Button (onClick = {
                         navController.navigate(route = "login")
                     }) {
                         Text("Logout")
@@ -31,6 +37,9 @@ class StudentPage(private val connection: String, private val bookingSystem: Boo
             }
             composable(route = "bookComputer") {
                 BookComputerPage(connection, bookingSystem).render()
+            }
+            composable(route = "viewBookings") {
+                ViewBookingsPage(connection, bookingSystem).render()
             }
             composable(route = "login") {
                 LoginPage(connection).render()
