@@ -29,6 +29,12 @@ class AdminPage(private val connection: String, private val bookingSystem: Booki
                     }
 
                     Button (onClick = {
+                        navController.navigate("roomDayBookings")
+                    }) {
+                        Text("View Bookings")
+                    }
+
+                    Button (onClick = {
                         navController.navigate("login")
                     }) {
                         Text("Logout")
@@ -40,6 +46,9 @@ class AdminPage(private val connection: String, private val bookingSystem: Booki
             }
             composable(route = "editRooms") {
                 EditRoomsPage(connection, bookingSystem).render()
+            }
+            composable(route = "roomDayBookings") {
+                RoomDayBookings(connection, bookingSystem).render()
             }
             composable(route = "login") {
                 LoginPage(connection).render()
