@@ -126,15 +126,37 @@ class AddRoomTest {
             for (j in 0..5) {
                 bookingSystem.addRoom(Room(
                     i.toString(),
-                    i.toString(),
-                    i.toString(),
-                    i
+                    "",
+                    "",
+                    0
                 ))
             }
         }
 
         for (i in 0..5) {
             assert(bookingSystem.getUniqueRoomNumbers()[i] == i.toString())
+        }
+    }
+
+    @Test
+    fun testUniqueRoomBuildings() {
+        clearRooms()
+
+        val bookingSystem = BookingSystem(connection)
+
+        for (i in 0..5) {
+            for (j in 0..5) {
+                bookingSystem.addRoom(Room(
+                    "",
+                    i.toString(),
+                    "",
+                    0
+                ))
+            }
+        }
+
+        for (i in 0..5) {
+            assert(bookingSystem.getUniqueRoomBuildings()[i] == i.toString())
         }
     }
 }
