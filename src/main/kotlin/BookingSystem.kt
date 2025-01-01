@@ -5,7 +5,6 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.awt.print.Book
 
 class BookingSystem(private val connection: String) {
     val users = mutableListOf<User>()
@@ -243,6 +242,16 @@ class BookingSystem(private val connection: String) {
         }
 
         return false
+    }
+
+    fun getUniqueRoomNumbers(): List<String> {
+        val uniqueNumbers = mutableListOf<String>()
+
+        for (i in rooms) {
+            uniqueNumbers += i.number
+        }
+
+        return uniqueNumbers.distinct()
     }
 
     fun cancel(booking: Booking) {
