@@ -19,26 +19,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
 class BookComputerPage(private val connection: String, private val bookingSystem: BookingSystem) {
-    private var buildings = listOf<String>()
-    private var computerTypes = listOf<String>()
     private var currentRoom: Room? = null
-
-    init {
-        Database.connect(
-            connection,
-            "org.sqlite.JDBC"
-        )
-
-        transaction {
-            RoomsTable.selectAll().forEach {
-                buildings += it[RoomsTable.building]
-                computerTypes += it[RoomsTable.computerType]
-            }
-        }
-
-        buildings = buildings.distinct()
-        computerTypes = computerTypes.distinct()
-    }
+    private val buildings = bookingSystem.getUniqueRoomBuildings()
+    private val types = bookingSystem.getUniqueRoomComputerTypes()
 
     @Composable
     fun render() {
@@ -50,7 +33,7 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                 Column {
                     if (renderTable()) {
                         var selectedBuilding by remember { mutableStateOf(buildings.first()) }
-                        var selectedType by remember { mutableStateOf(computerTypes.first()) }
+                        var selectedType by remember { mutableStateOf(types.first()) }
 
                         Row {
                             Row {
@@ -97,14 +80,14 @@ class BookComputerPage(private val connection: String, private val bookingSystem
                                 Button(onClick = {
                                     isDropDownExpanded.value = true
                                 }){
-                                    Text(text = computerTypes[itemPosition.value])
+                                    Text(text = types[itemPosition.value])
                                 }
                                 DropdownMenu(
                                     expanded = isDropDownExpanded.value,
                                     onDismissRequest = {
                                         isDropDownExpanded.value = false
                                     }) {
-                                    computerTypes.forEachIndexed { index, item ->
+                                    types.forEachIndexed { index, item ->
                                         DropdownMenuItem(
                                             onClick = {
                                                 isDropDownExpanded.value = false
@@ -286,7 +269,7 @@ class BookComputerPage(private val connection: String, private val bookingSystem
             return false
         }
 
-        if (computerTypes.isEmpty()) {
+        if (types.isEmpty()) {
             return false
         }
 
