@@ -26,6 +26,9 @@ class RoomDayBookings(private val connection: String, private val bookingSystem:
                     val rooms = bookingSystem.getUniqueRoomNumbers()
                     var selectedRoom by remember { mutableStateOf(rooms.first()) }
 
+                    val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+                    var selectedDay by remember { mutableStateOf(days.first()) }
+
                     Row {
                         Row {
                             val isDropDownExpanded = remember {
@@ -59,11 +62,46 @@ class RoomDayBookings(private val connection: String, private val bookingSystem:
                                 }
                             }
                         }
+
+                        Row {
+                            Row {
+                                val isDropDownExpanded = remember {
+                                    mutableStateOf(false)
+                                }
+
+                                val itemPosition = remember {
+                                    mutableStateOf(0)
+                                }
+
+                                Button(onClick = {
+                                    isDropDownExpanded.value = true
+                                }) {
+                                    Text(text = days[itemPosition.value])
+                                }
+                                DropdownMenu(
+                                    expanded = isDropDownExpanded.value,
+                                    onDismissRequest = {
+                                        isDropDownExpanded.value = false
+                                    }) {
+                                    days.forEachIndexed { index, item ->
+                                        DropdownMenuItem(
+                                            onClick = {
+                                                isDropDownExpanded.value = false
+                                                itemPosition.value = index
+                                                selectedDay = item
+                                            }, content = {
+                                                Text(text = item)
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     val bookings = mutableListOf<Booking>()
 
-                    for (i in bookingSystem.getAllBookingsForRoomAndDay(selectedRoom, "Monday")!!) {
+                    for (i in bookingSystem.getAllBookingsForRoomAndDay(selectedRoom, selectedDay)!!) {
                         bookings += i
                     }
 
