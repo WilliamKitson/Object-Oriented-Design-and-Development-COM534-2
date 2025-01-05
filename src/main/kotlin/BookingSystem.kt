@@ -8,7 +8,7 @@ class BookingSystem(private val connection: String) {
     val users = mutableListOf<User>()
     val rooms = mutableListOf<Room>()
     var currentUser: User? = null
-    var lastError = LastError.NoError
+    private var lastError = LastError.NoError
 
     init {
         Database.connect(
@@ -188,7 +188,7 @@ class BookingSystem(private val connection: String) {
         val roomAuthenticator = RoomAuthenticator()
 
         if (!roomAuthenticator.authenticate(room, rooms)) {
-            lastError = roomAuthenticator.getLastError()
+            lastError = roomAuthenticator.getLastError(room, rooms)
             return
         }
 

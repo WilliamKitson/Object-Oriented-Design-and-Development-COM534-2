@@ -1,6 +1,4 @@
 class RoomAuthenticator {
-    private var lastError = LastError.NoError
-
     fun authenticate(room: Room, rooms: MutableList<Room>): Boolean {
         if (room.number.isEmpty()) {
             return false
@@ -15,11 +13,9 @@ class RoomAuthenticator {
         }
 
         if (roomExists(room, rooms)) {
-            lastError = LastError.RoomAlreadyExists
             return false
         }
 
-        lastError = LastError.NoError
         return true
     }
 
@@ -45,7 +41,15 @@ class RoomAuthenticator {
         return true
     }
 
-    fun getLastError(): LastError {
-        return lastError
+    fun getLastError(room: Room, rooms: MutableList<Room>): LastError {
+        if (room.number.isEmpty()) {
+            return LastError.RoomNumberEmpty
+        }
+
+        if (roomExists(room, rooms)) {
+            return LastError.RoomAlreadyExists
+        }
+
+        return LastError.NoError
     }
 }
