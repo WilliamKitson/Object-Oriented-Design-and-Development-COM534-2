@@ -181,4 +181,20 @@ class AddRoomTest {
             assert(bookingSystem.getUniqueRoomComputerTypes()[i] == i.toString())
         }
     }
+
+    @Test
+    fun testRoomNumberEmpty() {
+        clearRooms()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.addRoom(Room(
+            "",
+            "building",
+            "PC",
+            5
+        ))
+
+        assert(bookingSystem.rooms.isEmpty())
+    }
 }
