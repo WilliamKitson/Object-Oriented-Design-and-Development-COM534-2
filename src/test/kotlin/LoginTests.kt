@@ -37,7 +37,21 @@ class LoginTests {
     }
 
     @Test
-    fun testLoginUsernameError() {
+    fun testLoginUsernameEmptyError() {
+        clearAccounts()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.login(
+            "",
+            "password"
+        )
+
+        assert(bookingSystem.getLastError() == "Error: you have not specified a username.")
+    }
+
+    @Test
+    fun testLoginUsernameUnregisteredError() {
         clearAccounts()
 
         val bookingSystem = BookingSystem(connection)
@@ -47,7 +61,7 @@ class LoginTests {
     }
 
     @Test
-    fun testLoginPasswordError() {
+    fun testLoginPasswordIncorrectError() {
         clearAccounts()
 
         val user = User(

@@ -2,11 +2,10 @@
  * Copyright (c) 2024. William E. Kitson.
  */
 
-package domain
-
 enum class LastError {
     NoError,
     UsernameDuplicated,
+    UsernameEmpty,
     PasswordTooShort,
     PasswordNoUppercases,
     PasswordNoLowercases,
@@ -18,6 +17,7 @@ enum class LastError {
     override fun toString(): String {
         return when (this) {
             NoError -> ""
+            UsernameEmpty -> "Error: you have not specified a username."
             UsernameDuplicated -> "Error: username duplicated."
             PasswordTooShort -> "Error: password too short."
             PasswordNoUppercases -> "Error: password no uppercases."

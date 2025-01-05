@@ -1,5 +1,3 @@
-import domain.LastError
-import domain.PasswordAuthenticator
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
@@ -129,6 +127,10 @@ class BookingSystem(private val connection: String) {
 
     private fun calculateLoginError(username: String, password: String): LastError {
         lastError = LastError.UsernameUnregistered
+
+        if (username.isEmpty()) {
+            return LastError.UsernameEmpty
+        }
 
         for (user in users) {
             if (user.username == username) {

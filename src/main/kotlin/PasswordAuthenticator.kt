@@ -2,8 +2,6 @@
  * Copyright (c) 2024. William E. Kitson.
  */
 
-package domain
-
 class PasswordAuthenticator {
     fun valid(password: String): Boolean{
         if (!length(password)){
