@@ -61,6 +61,20 @@ class LoginTests {
     }
 
     @Test
+    fun testLoginPasswordEmptyError() {
+        clearAccounts()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.login(
+            "student",
+            ""
+        )
+
+        assert(bookingSystem.getLastError() == "Error: you have not specified a password.")
+    }
+
+    @Test
     fun testLoginPasswordIncorrectError() {
         clearAccounts()
 
@@ -72,7 +86,7 @@ class LoginTests {
         val bookingSystem = BookingSystem(connection)
         bookingSystem.signupStudent(user.username, user.password)
 
-        bookingSystem.login(user.username, "")
+        bookingSystem.login(user.username, "wrong")
         assert(bookingSystem.getLastError() == "Error: password incorrect.")
     }
 }

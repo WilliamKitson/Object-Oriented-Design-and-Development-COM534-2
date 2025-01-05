@@ -126,23 +126,43 @@ class BookingSystem(private val connection: String) {
     }
 
     private fun calculateLoginError(username: String, password: String): LastError {
-        lastError = LastError.UsernameUnregistered
-
         if (username.isEmpty()) {
             return LastError.UsernameEmpty
         }
 
-        for (user in users) {
-            if (user.username == username) {
-                if (user.password != password) {
-                    return LastError.PasswordIncorrect
-                }
-
-                return LastError.NoError
-            }
+        if (password.isEmpty()) {
+            return LastError.PasswordEmpty
         }
 
-        return LastError.UsernameUnregistered
+        if (calculateUsernameUnregistered(username)) {
+            return LastError.UsernameUnregistered
+        }
+
+        if (calculateIncorrectPassword(username, password)) {
+            return LastError.PasswordIncorrect
+        }
+
+        return LastError.NoError
+    }
+
+    private fun calculateUsernameUnregistered(username: String): Boolean {
+        val user = users.firstOrNull {
+            it.username == username
+        }
+
+        return user == null
+    }
+
+    private fun calculateIncorrectPassword(username: String, password: String): Boolean {
+        val user = users.firstOrNull {
+            it.username == username
+        }
+
+        if (user == null) {
+            return true
+        }
+
+        return user.password != password
     }
 
     fun getLastError(): String {

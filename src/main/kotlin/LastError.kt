@@ -6,6 +6,7 @@ enum class LastError {
     NoError,
     UsernameDuplicated,
     UsernameEmpty,
+    PasswordEmpty,
     PasswordTooShort,
     PasswordNoUppercases,
     PasswordNoLowercases,
@@ -17,8 +18,9 @@ enum class LastError {
     override fun toString(): String {
         return when (this) {
             NoError -> ""
-            UsernameEmpty -> "Error: you have not specified a username."
             UsernameDuplicated -> "Error: username duplicated."
+            UsernameEmpty -> "Error: you have not specified a username."
+            PasswordEmpty -> "Error: you have not specified a password."
             PasswordTooShort -> "Error: password too short."
             PasswordNoUppercases -> "Error: password no uppercases."
             PasswordNoLowercases -> "Error: password no lowercases."
