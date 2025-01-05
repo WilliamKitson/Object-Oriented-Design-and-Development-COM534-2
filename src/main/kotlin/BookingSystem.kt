@@ -210,14 +210,6 @@ class BookingSystem(private val connection: String) {
         return rooms.singleOrNull { it.number == number }
     }
 
-    fun findRoomsByBuilding(building: String): List<Room> {
-        return rooms.filter { it.building == building }
-    }
-
-    fun findRoomsByType(compType: String) : List<Room> {
-        return rooms.filter { it.compType == compType }
-    }
-
     fun getAllBookingsForRoomAndDay(room: String, day: String) : List<Booking>? {
         val room = findRoomByNumber(room)
         if(room != null) {
@@ -287,14 +279,4 @@ class BookingSystem(private val connection: String) {
         }
         return false
     }
-
-    fun changeComputerType(roomNumber: String, type: String) : Boolean {
-        val room = findRoomByNumber(roomNumber)
-        if(room != null) {
-            room.compType = type
-            return true
-        }
-        return false
-    }
-
 }
