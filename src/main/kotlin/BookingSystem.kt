@@ -101,6 +101,7 @@ class BookingSystem(private val connection: String) {
 
     fun signupAdministrator(username: String, password: String) {
         if (invalidUsername(username)) {
+            lastError = LastError.UsernameEmpty
             return
         }
 
