@@ -231,6 +231,22 @@ class AddRoomTest {
     }
 
     @Test
+    fun testRoomBuildingEmptyError() {
+        clearRooms()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.addRoom(Room(
+            "Number",
+            "",
+            "PC",
+            5
+        ))
+
+        assert(bookingSystem.getLastError() == "Error: you have not specified a building.")
+    }
+
+    @Test
     fun testRoomTypeEmpty() {
         clearRooms()
 

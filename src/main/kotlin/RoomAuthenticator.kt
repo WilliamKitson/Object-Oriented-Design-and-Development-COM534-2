@@ -46,6 +46,10 @@ class RoomAuthenticator {
             return LastError.RoomNumberEmpty
         }
 
+        if (room.building.isEmpty()) {
+            return LastError.RoomBuildingEmpty
+        }
+
         if (roomExists(room, rooms)) {
             return LastError.RoomAlreadyExists
         }

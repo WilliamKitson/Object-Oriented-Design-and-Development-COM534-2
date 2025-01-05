@@ -14,7 +14,8 @@ enum class LastError {
     UsernameUnregistered,
     PasswordIncorrect,
     RoomAlreadyExists,
-    RoomNumberEmpty;
+    RoomNumberEmpty,
+    RoomBuildingEmpty;
 
     override fun toString(): String {
         return when (this) {
@@ -30,6 +31,7 @@ enum class LastError {
             PasswordIncorrect -> "Error: password incorrect."
             RoomAlreadyExists -> "Error: room already exists."
             RoomNumberEmpty -> "Error: you have not specified a room number."
+            RoomBuildingEmpty -> "Error: you have not specified a building."
         }
     }
 }
