@@ -62,10 +62,8 @@ class BookingSystem(private val connection: String) {
     }
 
     fun signupStudent(username: String, password: String) {
-        for (user in users) {
-            if (user.username == username) {
-                return
-            }
+        if (invalidUsername(username)) {
+            return
         }
 
         val passwordAuthenticator = PasswordAuthenticator()
