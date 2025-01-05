@@ -197,4 +197,20 @@ class AddRoomTest {
 
         assert(bookingSystem.rooms.isEmpty())
     }
+
+    @Test
+    fun testRoomBuildingEmpty() {
+        clearRooms()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.addRoom(Room(
+            "Number",
+            "",
+            "PC",
+            5
+        ))
+
+        assert(bookingSystem.rooms.isEmpty())
+    }
 }

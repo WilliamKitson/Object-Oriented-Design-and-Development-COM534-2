@@ -204,6 +204,10 @@ class BookingSystem(private val connection: String) {
             return
         }
 
+        if (room.building.isEmpty()) {
+            return
+        }
+
         transaction {
             SchemaUtils.create(RoomsTable)
 
