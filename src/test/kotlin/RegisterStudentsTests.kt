@@ -79,6 +79,20 @@ class RegisterStudentsTests {
     }
 
     @Test
+    fun testEmptyUsernameError() {
+        clearAccounts()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.signupStudent(
+            "",
+            "20CharactersOrMore20"
+        )
+
+        assert(bookingSystem.getLastError() == "Error: you have not specified a username.")
+    }
+
+    @Test
     fun testDuplicatedUsername() {
         clearAccounts()
 
