@@ -52,8 +52,13 @@ class AddRoomPage(private val connection: String, private val bookingSystem: Boo
                     Button (onClick = {
                         var computers = 0
 
-                        if (nComputers.isNotEmpty()) {
-                            computers = nComputers.toInt()
+                        val nComputersFiltered = nComputers.replace(
+                            "[^0-9]".toRegex(),
+                            ""
+                        )
+
+                        if (nComputersFiltered.isNotEmpty()) {
+                            computers = nComputersFiltered.toInt()
                         }
 
                         bookingSystem.addRoom(Room(
