@@ -88,15 +88,21 @@ class BookingSystem(private val connection: String) {
         addUser(User(username, password, false))
     }
 
-    fun signupAdministrator(username: String, password: String) {
+    private fun invalidUsername(username: String): Boolean {
         if (username.isEmpty()) {
-            return
+            return true
         }
 
-        for (user in users) {
-            if (user.username == username) {
-                return
-            }
+        val user = users.firstOrNull {
+            it.username == username
+        }
+
+        return user != null
+    }
+
+    fun signupAdministrator(username: String, password: String) {
+        if (invalidUsername(username)) {
+            return
         }
 
         val passwordAuthenticator = PasswordAuthenticator()
