@@ -184,31 +184,11 @@ class BookingSystem(private val connection: String) {
     }
 
     fun addRoom(room: Room) {
-        if (roomExists(room)) {
-            lastError = LastError.RoomAlreadyExists
-            return
-        }
-
         lastError = LastError.NoError
+        val roomAuthenticator = RoomAuthenticator()
 
-        for (i in rooms) {
-            if (i.number == room.number) {
-                if (i.building == room.building) {
-                    lastError = LastError.RoomAlreadyExists
-                    return
-                }
-            }
-        }
-
-        if (room.number.isEmpty()) {
-            return
-        }
-
-        if (room.building.isEmpty()) {
-            return
-        }
-
-        if (room.compType.isEmpty()) {
+        if (!roomAuthenticator.authenticate(room, rooms)) {
+            lastError = roomAuthenticator.getLastError()
             return
         }
 
@@ -224,28 +204,6 @@ class BookingSystem(private val connection: String) {
         }
 
         rooms.add(room)
-    }
-
-    private fun roomExists(room: Room): Boolean {
-        for (i in rooms) {
-            if (roomMatches(i, room)) {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    private fun roomMatches(first: Room, second: Room): Boolean {
-        if (first.number != second.number) {
-            return false
-        }
-
-        if (first.building != second.building) {
-            return false
-        }
-
-        return true
     }
 
     fun findRoomByNumber(number: String) : Room? {
