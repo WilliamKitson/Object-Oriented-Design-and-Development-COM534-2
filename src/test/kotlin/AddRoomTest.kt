@@ -127,7 +127,7 @@ class AddRoomTest {
                 bookingSystem.addRoom(Room(
                     i.toString(),
                     j.toString(),
-                    "",
+                    "PC",
                     0
                 ))
             }
@@ -149,7 +149,7 @@ class AddRoomTest {
                 bookingSystem.addRoom(Room(
                     j.toString(),
                     i.toString(),
-                    "",
+                    "PC",
                     0
                 ))
             }
@@ -208,6 +208,22 @@ class AddRoomTest {
             "Number",
             "",
             "PC",
+            5
+        ))
+
+        assert(bookingSystem.rooms.isEmpty())
+    }
+
+    @Test
+    fun testRoomTypeEmpty() {
+        clearRooms()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.addRoom(Room(
+            "Number",
+            "Building",
+            "",
             5
         ))
 
