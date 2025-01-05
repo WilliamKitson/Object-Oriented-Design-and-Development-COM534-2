@@ -50,6 +50,10 @@ class RoomAuthenticator {
             return LastError.RoomBuildingEmpty
         }
 
+        if (room.compType.isEmpty()) {
+            return LastError.RoomComputerTypeEmpty
+        }
+
         if (roomExists(room, rooms)) {
             return LastError.RoomAlreadyExists
         }

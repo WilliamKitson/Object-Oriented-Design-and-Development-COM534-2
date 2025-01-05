@@ -261,4 +261,20 @@ class AddRoomTest {
 
         assert(bookingSystem.rooms.isEmpty())
     }
+
+    @Test
+    fun testRoomTypeEmptyError() {
+        clearRooms()
+
+        val bookingSystem = BookingSystem(connection)
+
+        bookingSystem.addRoom(Room(
+            "Number",
+            "Building",
+            "",
+            5
+        ))
+
+        assert(bookingSystem.getLastError() == "Error: you have not specified a computer type.")
+    }
 }
