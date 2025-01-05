@@ -50,11 +50,17 @@ class AddRoomPage(private val connection: String, private val bookingSystem: Boo
                     )
 
                     Button (onClick = {
+                        var computers = 0
+
+                        if (nComputers.isNotEmpty()) {
+                            computers = nComputers.toInt()
+                        }
+
                         bookingSystem.addRoom(Room(
                             number,
                             building,
                             computerType,
-                            nComputers.toInt(),
+                            computers,
                         ))
 
                         errors = bookingSystem.getLastError()
