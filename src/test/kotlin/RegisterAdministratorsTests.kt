@@ -71,6 +71,14 @@ class RegisterAdministratorsTests {
     }
 
     @Test
+    fun testEmptyUsername() {
+        clearAccounts()
+
+        BookingSystem(connection).signupAdministrator("", "20CharactersOrMore20")
+        assert(BookingSystem(connection).users.isEmpty())
+    }
+
+    @Test
     fun testDuplicatedUsername() {
         clearAccounts()
 
